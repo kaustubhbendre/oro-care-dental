@@ -1,7 +1,7 @@
 // src/pages/AdminDashboard.jsx
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { getAllAppointments, updateAppointmentStatus, isSupabaseConfigured } from '../lib/supabase';
+import { getAllAppointments, updateAppointmentStatus, isSupabaseConfigured, signInAdmin, signOutAdmin, getCurrentUser } from '../lib/supabase';
 import toast from 'react-hot-toast';
 import { RefreshCw, CheckCircle, XCircle, CheckSquare, Phone, Mail } from 'lucide-react';
 
@@ -17,8 +17,15 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
   const [dateFilter, setDateFilter] = useState('');
+  const [user, setUser] = useState(null);
+  const [authLoading, setAuthLoading] = useState(true);
+  const [authenticating, setAuthenticating] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loginError, setLoginError] = useState('');
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
+    if (!user) return;
     if (!isSupabaseConfigured) {
       toast.error('Database not configured. Please set up Supabase in .env file.');
       return;
@@ -34,7 +41,7 @@ export default function AdminDashboard() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user]);
 
   useEffect(() => {
     document.title = 'Admin - Oro-Care Dental';
@@ -51,7 +58,26 @@ export default function AdminDashboard() {
     }
 
     adminMeta.content = 'noindex, nofollow';
-    fetchData();
+
+    const checkAuth = async () => {
+      if (!isSupabaseConfigured) {
+        setAuthLoading(false);
+        return;
+      }
+
+      try {
+        const currentUser = await getCurrentUser();
+        if (currentUser) {
+          setUser(currentUser);
+        }
+      } catch (err) {
+        console.error('Auth check failed:', err);
+      } finally {
+        setAuthLoading(false);
+      }
+    };
+
+    checkAuth();
 
     return () => {
       if (adminMeta) {
@@ -62,6 +88,123 @@ export default function AdminDashboard() {
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (user) {
+      fetchData();
+    }
+  }, [fetchData, user]);
+
+  const handleLogin = async (event) => {
+    event.preventDefault();
+    setLoginError('');
+    if (!isSupabaseConfigured) {
+      setLoginError('Supabase is not configured. Please add environment variables and redeploy.');
+      return;
+    }
+
+    setAuthenticating(true);
+    try {
+      const { data, error } = await signInAdmin(email, password);
+      if (error || !data?.user) {
+        throw error || new Error('Sign in failed.');
+      }
+      setUser(data.user);
+      setEmail('');
+      setPassword('');
+    } catch (err) {
+      setLoginError(err?.message || 'Unable to sign in. Please check your credentials.');
+    } finally {
+      setAuthenticating(false);
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await signOutAdmin();
+    } catch (err) {
+      console.error('Logout failed:', err);
+    }
+    setUser(null);
+  };
+
+  if (authLoading) {
+    return (
+      <div className="admin-page">
+        <div className="admin-header">
+          <div className="container admin-header-inner">
+            <div>
+              <h1 className="admin-title">🦷 Oro-Care Admin</h1>
+              <p className="admin-sub">Loading admin access...</p>
+            </div>
+          </div>
+        </div>
+        <div className="container admin-body">
+          <div className="loading-state">
+            <div className="big-spinner" />
+            <p>Checking your login status...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="admin-page">
+        <div className="admin-header">
+          <div className="container admin-header-inner">
+            <div>
+              <h1 className="admin-title">🦷 Oro-Care Admin</h1>
+              <p className="admin-sub">Secure admin access to appointment management</p>
+            </div>
+          </div>
+        </div>
+        <div className="container admin-body">
+          <div className="login-card">
+            <h2>Admin Login</h2>
+            <p>Sign in with your Supabase admin account to view appointment requests.</p>
+            <form onSubmit={handleLogin} className="login-form">
+              <label>
+                Email
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="admin@yourclinic.com"
+                  required
+                />
+              </label>
+              <label>
+                Password
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter your admin password"
+                  required
+                />
+              </label>
+              {loginError && <p className="login-error">{loginError}</p>}
+              <button type="submit" className="btn-primary" disabled={authenticating}>
+                {authenticating ? 'Signing in…' : 'Sign In'}
+              </button>
+            </form>
+            {!isSupabaseConfigured && (
+              <div className="admin-help">
+                <p>Supabase is not configured yet. Please add <code>REACT_APP_SUPABASE_URL</code> and <code>REACT_APP_SUPABASE_ANON_KEY</code> to your <code>.env</code> file, then redeploy.</p>
+              </div>
+            )}
+            {isSupabaseConfigured && (
+              <div className="admin-help">
+                <p>If you don't have an admin account yet, create one in your Supabase project under Authentication &gt; Users.</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (!isSupabaseConfigured) {
     return (
@@ -130,10 +273,15 @@ export default function AdminDashboard() {
             <h1 className="admin-title">🦷 Oro-Care Admin</h1>
             <p className="admin-sub">Appointment Management Dashboard</p>
           </div>
-          <button className="btn-outline refresh-btn" onClick={fetchData} disabled={loading}>
-            <RefreshCw size={16} className={loading ? 'spin' : ''} />
-            Refresh
-          </button>
+          <div className="admin-actions">
+            <button className="btn-outline refresh-btn" onClick={fetchData} disabled={loading}>
+              <RefreshCw size={16} className={loading ? 'spin' : ''} />
+              Refresh
+            </button>
+            <button className="btn-outline logout-btn" onClick={handleLogout}>
+              Logout
+            </button>
+          </div>
         </div>
       </div>
 
@@ -322,13 +470,21 @@ export default function AdminDashboard() {
           font-size: 0.85rem;
           margin-top: 2px;
         }
-        .refresh-btn {
+        .admin-actions {
+          display: flex;
+          gap: 10px;
+          flex-wrap: wrap;
+          align-items: center;
+        }
+        .refresh-btn,
+        .logout-btn {
           color: var(--white) !important;
           border-color: rgba(255,255,255,0.3) !important;
           padding: 8px 20px !important;
           font-size: 0.85rem !important;
         }
-        .refresh-btn:hover {
+        .refresh-btn:hover,
+        .logout-btn:hover {
           background: rgba(255,255,255,0.1) !important;
           color: var(--white) !important;
         }
@@ -419,6 +575,63 @@ export default function AdminDashboard() {
           padding: 2px 6px;
           border-radius: 6px;
           font-size: 0.85rem;
+        }
+        .login-card {
+          max-width: 500px;
+          margin: 0 auto;
+          background: var(--white);
+          padding: 32px;
+          border-radius: var(--radius-lg);
+          box-shadow: var(--shadow-sm);
+        }
+        .login-card h2 {
+          margin-bottom: 12px;
+          font-family: var(--font-display);
+          font-size: 1.6rem;
+        }
+        .login-card p {
+          margin-bottom: 24px;
+          color: var(--text-mid);
+          line-height: 1.7;
+        }
+        .login-form {
+          display: grid;
+          gap: 16px;
+        }
+        .login-form label {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+          font-size: 0.9rem;
+          color: var(--text-dark);
+        }
+        .login-form input {
+          padding: 12px 14px;
+          border-radius: var(--radius-sm);
+          border: 1px solid rgba(10,74,110,0.15);
+          font-size: 0.95rem;
+          font-family: var(--font-body);
+          outline: none;
+          transition: border-color 0.2s ease;
+        }
+        .login-form input:focus {
+          border-color: var(--ocean);
+        }
+        .login-error {
+          color: var(--error);
+          font-size: 0.9rem;
+          margin-top: -8px;
+        }
+        .admin-help {
+          margin-top: 20px;
+          font-size: 0.9rem;
+          color: var(--text-mid);
+          line-height: 1.75;
+        }
+        .admin-help code {
+          background: rgba(10,74,110,0.06);
+          padding: 2px 6px;
+          border-radius: 6px;
         }
         .appt-table-wrap {
           background: var(--white);

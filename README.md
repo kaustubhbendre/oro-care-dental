@@ -67,7 +67,13 @@ Then edit `.env` and paste your Supabase URL and anon key.
 >
 > After setting environment variables in Vercel, redeploy the site.
 
-### Step 5 — Start the development server
+### Step 5 — Create admin user in Supabase
+1. Go to your Supabase project dashboard.
+2. Open **Authentication → Users**.
+3. Create a new user with a secure admin email and password.
+4. Use those credentials to sign in at `https://<your-domain>/admin`.
+
+### Step 6 — Start the development server
 ```bash
 npm start
 ```

@@ -52,6 +52,42 @@ if (isSupabaseConfigured) {
 
 export { supabase };
 
+export async function signInAdmin(email, password) {
+  if (!isSupabaseConfigured || !supabase) {
+    throw new Error('Database not configured. Please set up Supabase in .env file.');
+  }
+
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  if (error) throw error;
+  return data;
+}
+
+export async function signOutAdmin() {
+  if (!isSupabaseConfigured || !supabase) {
+    throw new Error('Database not configured. Please set up Supabase in .env file.');
+  }
+
+  const { error } = await supabase.auth.signOut();
+  if (error) throw error;
+  return true;
+}
+
+export async function getCurrentUser() {
+  if (!isSupabaseConfigured || !supabase) {
+    return null;
+  }
+
+  const { data, error } = await supabase.auth.getUser();
+  if (error) {
+    throw error;
+  }
+  return data?.user || null;
+}
+
 // ---- Appointment Functions ----
 
 export async function createAppointment(data) {
