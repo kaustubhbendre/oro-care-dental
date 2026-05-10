@@ -61,6 +61,8 @@ export default function AppointmentForm() {
     }
   };
 
+  const demoMode = !isSupabaseConfigured;
+
   // Get tomorrow's date as minimum
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
@@ -126,6 +128,11 @@ export default function AppointmentForm() {
           animate={inView ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: 0.7, delay: 0.1 }}
         >
+          {demoMode && !success && (
+            <div className="demo-warning">
+              <strong>Demo mode:</strong> Your appointment form is active, but the database is not configured yet. Once Supabase is set up, bookings will be saved live.
+            </div>
+          )}
           {success ? (
             <div className="success-state">
               <div className="success-icon">✅</div>
@@ -410,6 +417,21 @@ export default function AppointmentForm() {
         .success-state p {
           color: var(--text-mid);
           line-height: 1.6;
+        }
+        .demo-warning {
+          background: rgba(253, 230, 138, 0.2);
+          border: 1px solid rgba(245, 158, 11, 0.35);
+          color: #92400e;
+          padding: 16px 20px;
+          border-radius: var(--radius-lg);
+          margin: 0 24px 0 24px;
+          font-size: 0.95rem;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+        }
+        .demo-warning strong {
+          color: #78350f;
         }
         @media (max-width: 900px) {
           .appt-container { grid-template-columns: 1fr; }

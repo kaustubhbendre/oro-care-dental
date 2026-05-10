@@ -53,8 +53,13 @@ export default function AdminDashboard() {
           <div className="empty-state">
             <span>⚙️</span>
             <p>Database Not Configured</p>
-            <small>Please set up Supabase in your .env file to use the admin dashboard.</small>
-            <a href="/" className="btn-primary" style={{ marginTop: '16px' }}>Back to Website</a>
+            <small>Please set up Supabase in your <code>.env</code> file to use the admin dashboard.</small>
+            <ul className="admin-help-list">
+              <li>Copy <code>.env.example</code> to <code>.env</code></li>
+              <li>Add <code>REACT_APP_SUPABASE_URL</code> and <code>REACT_APP_SUPABASE_ANON_KEY</code></li>
+              <li>Deploy again on Vercel with the same variables</li>
+            </ul>
+            <a href="https://supabase.com" target="_blank" rel="noreferrer" className="btn-primary" style={{ marginTop: '16px' }}>Go to Supabase</a>
           </div>
         </div>
       </div>
@@ -373,6 +378,22 @@ export default function AdminDashboard() {
           background: var(--white);
           color: var(--text-dark);
           outline: none;
+        }
+        .admin-help-list {
+          margin: 16px 0 0;
+          padding-left: 18px;
+          color: var(--text-mid);
+          font-size: 0.9rem;
+          line-height: 1.6;
+        }
+        .admin-help-list li {
+          margin-bottom: 8px;
+        }
+        .admin-help-list code {
+          background: rgba(10,74,110,0.06);
+          padding: 2px 6px;
+          border-radius: 6px;
+          font-size: 0.85rem;
         }
         .appt-table-wrap {
           background: var(--white);
