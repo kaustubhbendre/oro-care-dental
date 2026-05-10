@@ -71,7 +71,7 @@ Then edit `.env` and paste your Supabase URL and anon key.
 1. Go to your Supabase project dashboard.
 2. Open **Authentication → Users**.
 3. Create a new user with a secure admin email and password.
-4. Use those credentials to sign in at `https://<your-domain>/admin`.
+4. Sign in at `https://<your-domain>/admin/login`.
 
 ### Step 6 — Start the development server
 ```bash
@@ -87,10 +87,10 @@ To make sure Google finds your website:
 
 1. Verify your site in Google Search Console.
 2. Use the file or meta verification method in `public/index.html`.
-3. Confirm that `https://oro-care-dental.vercel.app/robots.txt` is accessible and includes `Disallow: /admin`.
+3. Confirm that `https://oro-care-dental.vercel.app/robots.txt` is accessible and includes `Disallow: /admin` and `Disallow: /admin/login`.
 4. Confirm that `https://oro-care-dental.vercel.app/sitemap.xml` is accessible and includes only the public website pages.
 
-> Note: The admin route `/admin` is intentionally hidden from search engines using robots rules and admin page metadata.
+> Note: The admin routes `/admin` and `/admin/login` are intentionally hidden from search engines using robots rules and admin page metadata.
 
 ---
 
@@ -160,14 +160,15 @@ oro-care-dental/
 
 ## 🔐 Admin Dashboard
 
-Visit http://localhost:3000/admin to:
+Visit `https://<your-domain>/admin/login` to:
+- Sign in with your Supabase admin credentials
 - View all appointment requests
 - Filter by status (pending / confirmed / completed / cancelled)
 - Filter by date
 - Confirm or cancel appointments
 - Update appointment status
 
-> **Note**: For production, add authentication to protect the admin route.
+> **Note**: The admin routes `/admin` and `/admin/login` are intentionally hidden from search engines using robots rules and page metadata.
 
 ---
 
