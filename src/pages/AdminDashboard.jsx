@@ -36,7 +36,32 @@ export default function AdminDashboard() {
     }
   };
 
-  useEffect(() => { fetchData(); }, []);
+  useEffect(() => {
+    document.title = 'Admin - Oro-Care Dental';
+    const existingMeta = document.querySelector('meta[name="robots"]');
+    let adminMeta = existingMeta;
+    let previousContent = '';
+
+    if (!adminMeta) {
+      adminMeta = document.createElement('meta');
+      adminMeta.name = 'robots';
+      document.head.appendChild(adminMeta);
+    } else {
+      previousContent = adminMeta.content;
+    }
+
+    adminMeta.content = 'noindex, nofollow';
+    fetchData();
+
+    return () => {
+      if (adminMeta) {
+        adminMeta.content = previousContent;
+        if (!existingMeta && adminMeta.parentNode) {
+          adminMeta.parentNode.removeChild(adminMeta);
+        }
+      }
+    };
+  }, []);
 
   if (!isSupabaseConfigured) {
     return (

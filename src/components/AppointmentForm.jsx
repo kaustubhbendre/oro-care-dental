@@ -130,7 +130,7 @@ export default function AppointmentForm() {
         >
           {demoMode && !success && (
             <div className="demo-warning">
-              <strong>Demo mode:</strong> Your appointment form is active, but the database is not configured yet. Once Supabase is set up, bookings will be saved live.
+              <strong>Demo mode:</strong> Your appointment form is active, but the database is not configured yet. Set <code>REACT_APP_SUPABASE_URL</code> and <code>REACT_APP_SUPABASE_ANON_KEY</code> in <code>.env</code>, then redeploy to make bookings live.
             </div>
           )}
           {success ? (

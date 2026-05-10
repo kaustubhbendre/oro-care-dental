@@ -76,6 +76,18 @@ Open http://localhost:3000 🎉
 
 ---
 
+## 🔍 Google Search Console & SEO
+To make sure Google finds your website:
+
+1. Verify your site in Google Search Console.
+2. Use the file or meta verification method in `public/index.html`.
+3. Confirm that `https://oro-care-dental.vercel.app/robots.txt` is accessible and includes `Disallow: /admin`.
+4. Confirm that `https://oro-care-dental.vercel.app/sitemap.xml` is accessible and includes only the public website pages.
+
+> Note: The admin route `/admin` is intentionally hidden from search engines using robots rules and admin page metadata.
+
+---
+
 ## 🛠️ VS Code Extensions (Recommended)
 
 Install these for the best development experience:
