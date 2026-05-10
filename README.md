@@ -57,6 +57,10 @@ CREATE POLICY "Auth users can update" ON appointments FOR UPDATE USING (auth.rol
 
 ### Step 4 — Configure environment
 ```bash
+# Run the setup helper (Windows)
+setup-supabase.bat
+
+# Or manually:
 cp .env.example .env
 ```
 Then edit `.env` and paste your Supabase URL and anon key.
@@ -79,6 +83,11 @@ npm start
 ```
 
 Open http://localhost:3000 🎉
+
+### Step 7 — Test the setup
+1. Visit http://localhost:3000 and book a test appointment
+2. Visit http://localhost:3000/admin/login and sign in with your admin credentials
+3. Check that appointments appear in the admin dashboard
 
 ---
 
