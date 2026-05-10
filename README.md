@@ -61,6 +61,12 @@ cp .env.example .env
 ```
 Then edit `.env` and paste your Supabase URL and anon key.
 
+> If you deploy on Vercel, add these same values under **Project Settings → Environment Variables**:
+> - `REACT_APP_SUPABASE_URL`
+> - `REACT_APP_SUPABASE_ANON_KEY`
+>
+> After setting environment variables in Vercel, redeploy the site.
+
 ### Step 5 — Start the development server
 ```bash
 npm start
