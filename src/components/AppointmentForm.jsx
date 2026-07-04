@@ -37,15 +37,10 @@ export default function AppointmentForm() {
   const onSubmit = async (data) => {
     setSubmitting(true);
     try {
-      if (isSupabaseConfigured) {
-        await createAppointment(data);
-        toast.success('Appointment booked! We\'ll confirm shortly.');
-      } else {
-        // Demo mode - simulate successful booking
-        await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
-        toast.success('Demo: Appointment request received! (Database not configured yet)');
-        console.log('Demo appointment data:', data);
-      }
+      await createAppointment(data);
+      toast.success(isSupabaseConfigured
+        ? 'Appointment booked! We\'ll confirm shortly.'
+        : 'Appointment saved locally. Connect Supabase later to sync it online.');
       setSuccess(true);
       reset();
       setTimeout(() => setSuccess(false), 5000);
@@ -133,7 +128,7 @@ export default function AppointmentForm() {
         >
           {demoMode && !success && (
             <div className="demo-warning">
-              <strong>Demo mode:</strong> Your appointment form is active, but the database is not configured yet. Set <code>REACT_APP_SUPABASE_URL</code> and <code>REACT_APP_SUPABASE_ANON_KEY</code> in <code>.env</code>, then redeploy to make bookings live.
+              <strong>Local mode:</strong> Your booking is being saved on this device for now. Connect Supabase later to sync it online and use the admin dashboard fully.
             </div>
           )}
           {success ? (

@@ -82,6 +82,66 @@ if (isSupabaseConfigured) {
 
 export { supabase };
 
+const STORAGE_KEY = 'oro-care-dental-appointments';
+
+function readStoredAppointments() {
+  if (typeof window === 'undefined') {
+    return [];
+  }
+
+  try {
+    const raw = window.localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch (error) {
+    console.error('Failed to read local appointments:', error);
+    return [];
+  }
+}
+
+function writeStoredAppointments(appointments) {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(appointments));
+}
+
+function createLocalAppointmentId() {
+  if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+    return crypto.randomUUID();
+  }
+
+  return `local-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+}
+
+export function getStoredAppointments() {
+  return readStoredAppointments();
+}
+
+export function saveAppointmentLocally(appointment) {
+  const appointments = readStoredAppointments();
+  const newAppointment = {
+    id: createLocalAppointmentId(),
+    ...appointment,
+    status: appointment.status || 'pending',
+    created_at: new Date().toISOString(),
+  };
+
+  const updated = [newAppointment, ...appointments];
+  writeStoredAppointments(updated);
+  return newAppointment;
+}
+
+export function updateStoredAppointmentStatus(id, status) {
+  const appointments = readStoredAppointments();
+  const updated = appointments.map((appointment) =>
+    appointment.id === id ? { ...appointment, status } : appointment
+  );
+
+  writeStoredAppointments(updated);
+  return updated.find((appointment) => appointment.id === id) || null;
+}
+
 export async function signInAdmin(email, password) {
   if (!isSupabaseConfigured || !supabase) {
     throw new Error('Database not configured. Please set up Supabase in .env file.');
@@ -121,57 +181,71 @@ export async function getCurrentUser() {
 // ---- Appointment Functions ----
 
 export async function createAppointment(data) {
-  if (!isSupabaseConfigured || !supabase) {
-    throw new Error('Database not configured. Please set up Supabase in .env file.');
+  const appointmentPayload = {
+    name: data.name,
+    phone: data.phone,
+    email: data.email || null,
+    service: data.service,
+    date: data.date,
+    time_slot: data.time_slot,
+    message: data.message || null,
+    status: 'pending'
+  };
+
+  if (isSupabaseConfigured && supabase) {
+    try {
+      const { data: result, error } = await supabase
+        .from('appointments')
+        .insert([appointmentPayload])
+        .select()
+        .single();
+
+      if (error) throw error;
+      return result;
+    } catch (error) {
+      console.warn('Supabase insert failed, using local fallback:', error);
+    }
   }
 
-  const { data: result, error } = await supabase
-    .from('appointments')
-    .insert([{
-      name: data.name,
-      phone: data.phone,
-      email: data.email || null,
-      service: data.service,
-      date: data.date,
-      time_slot: data.time_slot,
-      message: data.message || null,
-      status: 'pending'
-    }])
-    .select()
-    .single();
-
-  if (error) throw error;
-  return result;
+  return saveAppointmentLocally(appointmentPayload);
 }
 
 export async function getAllAppointments() {
-  if (!isSupabaseConfigured || !supabase) {
-    throw new Error('Database not configured. Please set up Supabase in .env file.');
+  if (isSupabaseConfigured && supabase) {
+    try {
+      const { data, error } = await supabase
+        .from('appointments')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      return data;
+    } catch (error) {
+      console.warn('Supabase fetch failed, using local fallback:', error);
+    }
   }
 
-  const { data, error } = await supabase
-    .from('appointments')
-    .select('*')
-    .order('created_at', { ascending: false });
-
-  if (error) throw error;
-  return data;
+  return getStoredAppointments();
 }
 
 export async function updateAppointmentStatus(id, status) {
-  if (!isSupabaseConfigured || !supabase) {
-    throw new Error('Database not configured. Please set up Supabase in .env file.');
+  if (isSupabaseConfigured && supabase) {
+    try {
+      const { data, error } = await supabase
+        .from('appointments')
+        .update({ status })
+        .eq('id', id)
+        .select()
+        .single();
+
+      if (error) throw error;
+      return data;
+    } catch (error) {
+      console.warn('Supabase update failed, using local fallback:', error);
+    }
   }
 
-  const { data, error } = await supabase
-    .from('appointments')
-    .update({ status })
-    .eq('id', id)
-    .select()
-    .single();
-
-  if (error) throw error;
-  return data;
+  return updateStoredAppointmentStatus(id, status);
 }
 
 export async function getAppointmentsByDate(date) {

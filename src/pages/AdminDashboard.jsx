@@ -24,17 +24,13 @@ export default function AdminDashboard() {
 
   const fetchData = useCallback(async () => {
     if (!user) return;
-    if (!isSupabaseConfigured) {
-      toast.error('Database not configured. Please set up Supabase in .env file.');
-      return;
-    }
 
     setLoading(true);
     try {
       const data = await getAllAppointments();
       setAppointments(data || []);
     } catch (err) {
-      toast.error('Failed to load appointments. Check Supabase config.');
+      toast.error('Failed to load appointments.');
       console.error(err);
     } finally {
       setLoading(false);
@@ -59,6 +55,7 @@ export default function AdminDashboard() {
 
     const checkAuth = async () => {
       if (!isSupabaseConfigured) {
+        setUser({ id: 'local-admin', email: 'local@oro-care.local' });
         setAuthLoading(false);
         return;
       }
