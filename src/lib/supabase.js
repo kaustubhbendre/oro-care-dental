@@ -33,14 +33,44 @@
 
 import { createClient } from '@supabase/supabase-js';
 
-// Force rebuild with env vars v2
-const SUPABASE_URL = process.env.REACT_APP_SUPABASE_URL || 'YOUR_SUPABASE_URL';
-const SUPABASE_ANON_KEY = process.env.REACT_APP_SUPABASE_ANON_KEY || 'YOUR_SUPABASE_ANON_KEY';
+const PLACEHOLDER_VALUES = new Set([
+  'YOUR_SUPABASE_URL',
+  'YOUR_SUPABASE_ANON_KEY',
+  'your-project-id',
+  'your_anon_key_here',
+  'your-anon-key-here',
+  'YOUR_PROJECT_ID',
+  'YOUR_ANON_KEY',
+]);
 
-// Check if Supabase is properly configured
-export const isSupabaseConfigured = SUPABASE_URL !== 'YOUR_SUPABASE_URL' && SUPABASE_ANON_KEY !== 'YOUR_SUPABASE_ANON_KEY' && SUPABASE_URL.startsWith('https://');
+function getEnvValue(env, keys) {
+  for (const key of keys) {
+    const value = env?.[key];
+    if (typeof value === 'string' && value.trim()) {
+      return value.trim();
+    }
+  }
+  return '';
+}
 
-// Create client only if configured
+export function getSupabaseConfig(env = process.env) {
+  const url = getEnvValue(env, ['REACT_APP_SUPABASE_URL', 'SUPABASE_URL']);
+  const anonKey = getEnvValue(env, ['REACT_APP_SUPABASE_ANON_KEY', 'SUPABASE_ANON_KEY']);
+  const isConfigured = Boolean(
+    url &&
+    anonKey &&
+    !PLACEHOLDER_VALUES.has(url) &&
+    !PLACEHOLDER_VALUES.has(anonKey) &&
+    /^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(url)
+  );
+
+  return { url, anonKey, isConfigured };
+}
+
+const { url: SUPABASE_URL, anonKey: SUPABASE_ANON_KEY, isConfigured: isSupabaseEnvConfigured } = getSupabaseConfig();
+
+export const isSupabaseConfigured = isSupabaseEnvConfigured;
+
 let supabase = null;
 if (isSupabaseConfigured) {
   try {
