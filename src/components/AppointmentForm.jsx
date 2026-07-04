@@ -1,7 +1,6 @@
 // src/components/AppointmentForm.jsx
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { useForm } from 'react-hook-form';
 import { useInView } from 'react-intersection-observer';
 import toast from 'react-hot-toast';
 import { CalendarCheck, Phone, Mail, Zap, Clock, DollarSign, MapPin, CheckCircle2 } from 'lucide-react';
@@ -25,24 +24,82 @@ const timeSlots = [
 export default function AppointmentForm() {
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    phone: '',
+    email: '',
+    service: '',
+    date: '',
+    time_slot: '',
+    message: ''
+  });
+  const [errors, setErrors] = useState({});
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors }
-  } = useForm();
+  const handleFieldChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    setErrors((prev) => ({ ...prev, [name]: undefined }));
+  };
 
-  const onSubmit = async (data) => {
+  const validateForm = () => {
+    const validationErrors = {};
+
+    if (!formData.name.trim()) {
+      validationErrors.name = 'Name is required';
+    }
+
+    if (!formData.phone.trim()) {
+      validationErrors.phone = 'Phone is required';
+    } else if (!/^[0-9+\s-]{10,15}$/.test(formData.phone)) {
+      validationErrors.phone = 'Invalid phone number';
+    }
+
+    if (formData.email && !/^\S+@\S+\.\S+$/.test(formData.email)) {
+      validationErrors.email = 'Invalid email';
+    }
+
+    if (!formData.service) {
+      validationErrors.service = 'Please select a service';
+    }
+
+    if (!formData.date) {
+      validationErrors.date = 'Date is required';
+    }
+
+    if (!formData.time_slot) {
+      validationErrors.time_slot = 'Time is required';
+    }
+
+    return validationErrors;
+  };
+
+  const onSubmit = async (event) => {
+    event.preventDefault();
+    const validationErrors = validateForm();
+
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
     setSubmitting(true);
     try {
-      await createAppointment(data);
+      await createAppointment(formData);
       toast.success(isSupabaseConfigured
         ? 'Appointment booked! We\'ll confirm shortly.'
         : 'Appointment saved locally. Connect Supabase later to sync it online.');
       setSuccess(true);
-      reset();
+      setFormData({
+        name: '',
+        phone: '',
+        email: '',
+        service: '',
+        date: '',
+        time_slot: '',
+        message: ''
+      });
+      setErrors({});
       setTimeout(() => setSuccess(false), 5000);
     } catch (err) {
       console.error(err);
@@ -141,7 +198,7 @@ export default function AppointmentForm() {
               </button>
             </div>
           ) : (
-            <form className="appt-form" onSubmit={handleSubmit(onSubmit)}>
+            <form className="appt-form" onSubmit={onSubmit}>
               <h3 className="form-title">
                 <CalendarCheck size={22} color="var(--teal)" />
                 Request an Appointment
@@ -152,9 +209,11 @@ export default function AppointmentForm() {
                   <label>Full Name *</label>
                   <input
                     type="text"
+                    name="name"
                     placeholder="Your full name"
                     className={errors.name ? 'error' : ''}
-                    {...register('name', { required: 'Name is required' })}
+                    value={formData.name}
+                    onChange={handleFieldChange}
                   />
                   {errors.name && <span className="form-error">{errors.name.message}</span>}
                 </div>
@@ -162,12 +221,11 @@ export default function AppointmentForm() {
                   <label>Phone Number *</label>
                   <input
                     type="tel"
+                    name="phone"
                     placeholder="+91 XXXXX XXXXX"
                     className={errors.phone ? 'error' : ''}
-                    {...register('phone', {
-                      required: 'Phone is required',
-                      pattern: { value: /^[0-9+\s-]{10,15}$/, message: 'Invalid phone number' }
-                    })}
+                    value={formData.phone}
+                    onChange={handleFieldChange}
                   />
                   {errors.phone && <span className="form-error">{errors.phone.message}</span>}
                 </div>
@@ -177,10 +235,11 @@ export default function AppointmentForm() {
                 <label>Email Address</label>
                 <input
                   type="email"
+                  name="email"
                   placeholder="your@email.com (optional)"
-                  {...register('email', {
-                    pattern: { value: /^\S+@\S+\.\S+$/, message: 'Invalid email' }
-                  })}
+                  className={errors.email ? 'error' : ''}
+                  value={formData.email}
+                  onChange={handleFieldChange}
                 />
                 {errors.email && <span className="form-error">{errors.email.message}</span>}
               </div>
@@ -188,8 +247,10 @@ export default function AppointmentForm() {
               <div className="form-group">
                 <label>Service Required *</label>
                 <select
+                  name="service"
                   className={errors.service ? 'error' : ''}
-                  {...register('service', { required: 'Please select a service' })}
+                  value={formData.service}
+                  onChange={handleFieldChange}
                 >
                   <option value="">Select a service...</option>
                   {services.map((s) => (
@@ -204,17 +265,21 @@ export default function AppointmentForm() {
                   <label>Preferred Date *</label>
                   <input
                     type="date"
+                    name="date"
                     min={minDate}
                     className={errors.date ? 'error' : ''}
-                    {...register('date', { required: 'Date is required' })}
+                    value={formData.date}
+                    onChange={handleFieldChange}
                   />
                   {errors.date && <span className="form-error">{errors.date.message}</span>}
                 </div>
                 <div className="form-group">
                   <label>Preferred Time *</label>
                   <select
+                    name="time_slot"
                     className={errors.time_slot ? 'error' : ''}
-                    {...register('time_slot', { required: 'Time is required' })}
+                    value={formData.time_slot}
+                    onChange={handleFieldChange}
                   >
                     <option value="">Select time...</option>
                     {timeSlots.map((t) => (
@@ -229,8 +294,10 @@ export default function AppointmentForm() {
                 <label>Message / Concerns</label>
                 <textarea
                   rows={3}
+                  name="message"
                   placeholder="Describe your dental concern or any special requirements..."
-                  {...register('message')}
+                  value={formData.message}
+                  onChange={handleFieldChange}
                 />
               </div>
 
