@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import { useInView } from 'react-intersection-observer';
 import toast from 'react-hot-toast';
-import { CalendarCheck, Phone, Mail } from 'lucide-react';
+import { CalendarCheck, Phone, Mail, Zap, Clock, DollarSign, MapPin, CheckCircle2 } from 'lucide-react';
 import { createAppointment, isSupabaseConfigured } from '../lib/supabase';
 
 const services = [
@@ -51,10 +51,10 @@ export default function AppointmentForm() {
       setTimeout(() => setSuccess(false), 5000);
     } catch (err) {
       console.error(err);
-      if (err.message.includes('Database not configured')) {
+      if (err?.message?.includes('Database not configured')) {
         toast.error('Database not set up. Please configure Supabase in .env file.');
       } else {
-        toast.error('Something went wrong. Please call us directly.');
+        toast.error(err?.message || 'Something went wrong. Please call us directly.');
       }
     } finally {
       setSubmitting(false);
@@ -94,19 +94,22 @@ export default function AppointmentForm() {
 
           <div className="appt-features">
             {[
-              { icon: '⚡', title: 'Quick Confirmation', desc: 'Within 2 hours' },
-              { icon: '🏥', title: 'No Wait Time', desc: 'On-time appointments' },
-              { icon: '💰', title: 'Free Consultation', desc: 'For new patients' },
-              { icon: '🅿️', title: 'Parking Available', desc: 'At the clinic' },
-            ].map((f) => (
-              <div className="appt-feature" key={f.title}>
-                <span className="feature-icon">{f.icon}</span>
-                <div>
-                  <p className="feature-title">{f.title}</p>
-                  <p className="feature-desc">{f.desc}</p>
+              { icon: Zap, title: 'Quick Confirmation', desc: 'Within 2 hours' },
+              { icon: Clock, title: 'No Wait Time', desc: 'On-time appointments' },
+              { icon: DollarSign, title: 'Free Consultation', desc: 'For new patients' },
+              { icon: MapPin, title: 'Parking Available', desc: 'At the clinic' },
+            ].map((f) => {
+              const Icon = f.icon;
+              return (
+                <div className="appt-feature" key={f.title}>
+                  <div className="feature-icon"><Icon size={18} /></div>
+                  <div>
+                    <p className="feature-title">{f.title}</p>
+                    <p className="feature-desc">{f.desc}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           <div className="appt-contact-info">
@@ -114,9 +117,9 @@ export default function AppointmentForm() {
               <Phone size={16} />
               +91 99678 69453
             </a>
-            <a href="mailto:shashank.kumar606@gmail.com" className="contact-chip">
+            <a href="mailto:kaustubhbendre0@gmal.com" className="contact-chip">
               <Mail size={16} />
-              shashank.kumar606@gmail.com
+              kaustubhbendre0@gmal.com
             </a>
           </div>
         </motion.div>
@@ -135,7 +138,7 @@ export default function AppointmentForm() {
           )}
           {success ? (
             <div className="success-state">
-              <div className="success-icon">✅</div>
+              <div className="success-icon"><CheckCircle2 size={36} /></div>
               <h3>Appointment Requested!</h3>
               <p>Thank you! We'll call you within 2 hours to confirm your appointment.</p>
               <button className="btn-primary" onClick={() => setSuccess(false)}>
@@ -253,7 +256,7 @@ export default function AppointmentForm() {
               </button>
 
               <p className="form-note">
-                🔒 Your information is private and secure. We'll never share it.
+                Your information is private and secure. We'll never share it.
               </p>
             </form>
           )}

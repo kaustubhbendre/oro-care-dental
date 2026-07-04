@@ -46,11 +46,11 @@ export default function Contact() {
                 </div>
               </a>
 
-              <a href="mailto:shashank.kumar606@gmail.com" className="info-card">
+              <a href="mailto:kaustubhbendre0@gmal.com" className="info-card">
                 <div className="info-icon"><Mail size={22} /></div>
                 <div>
                   <p className="info-title">Email</p>
-                  <p className="info-val">shashank.kumar606@gmail.com</p>
+                  <p className="info-val">kaustubhbendre0@gmal.com</p>
                 </div>
               </a>
 
@@ -103,7 +103,7 @@ export default function Contact() {
         <div className="container footer-inner">
           <div className="footer-brand">
             <div className="footer-logo">
-              <span>🦷</span>
+              <span>OC</span>
               <div>
                 <p className="footer-name">Oro-Care Dental Clinic</p>
                 <p className="footer-tagline">Where Smiles Are Made</p>
@@ -132,7 +132,7 @@ export default function Contact() {
             <p className="footer-heading">Contact</p>
             <p className="footer-addr">G-17/B, Ganeshwadi CHS, Bldg 5, MIDC Central Rd, Andheri (E), Mumbai 400093</p>
             <a href="tel:+919967869453" className="footer-link">+91 99678 69453</a>
-            <a href="mailto:shashank.kumar606@gmail.com" className="footer-link">shashank.kumar606@gmail.com</a>
+            <a href="mailto:kaustubhbendre0@gmal.com" className="footer-link">kaustubhbendre0@gmal.com</a>
             <a href="#appointment" className="btn-primary footer-cta">Book Appointment</a>
           </div>
         </div>
