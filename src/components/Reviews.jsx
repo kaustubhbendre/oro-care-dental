@@ -1,7 +1,7 @@
 // src/components/Reviews.jsx
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { Star, Quote } from 'lucide-react';
+import { Star, Quote, Search } from 'lucide-react';
 
 const reviews = [
   {
@@ -18,7 +18,7 @@ const reviews = [
     initials: 'RM',
     color: '#00b4d8',
     rating: 5,
-    text: 'Very kind & soft spoken 😊 100% satisfied with treatment. Dr. Shashank is an expert and the clinic is very clean and well-maintained.',
+    text: 'Very kind & soft spoken. 100% satisfied with treatment. Dr. Shashank is an expert and the clinic is very clean and well-maintained.',
     service: 'Root Canal',
     date: '1 month ago',
   },
@@ -148,7 +148,7 @@ export default function Reviews() {
             rel="noopener noreferrer"
             className="btn-outline google-btn"
           >
-            <span>🔍</span> Leave a Google Review
+            <Search size={16} /> Leave a Google Review
           </a>
         </motion.div>
       </div>

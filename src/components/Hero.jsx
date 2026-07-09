@@ -28,7 +28,7 @@ export default function Hero() {
           <motion.div
             custom={0} variants={floatVariants} initial="initial" animate="animate"
           >
-            <span className="section-tag">⭐ Rated 5.0 · 140+ Happy Patients</span>
+            <span className="section-tag">Trusted by 164K+ patients</span>
           </motion.div>
 
           <motion.h1
@@ -90,7 +90,7 @@ export default function Hero() {
           transition={{ delay: 0.3, duration: 0.9, ease: [0.4, 0, 0.2, 1] }}
         >
           <div className="visual-card main-card">
-            <div className="tooth-emoji">🦷</div>
+            <div className="visual-icon">OC</div>
             <div className="card-info">
               <p className="card-name">Dr. Shashank Kumar</p>
               <p className="card-qual">BDS (Mum) · CCOS (Delhi)</p>
@@ -122,8 +122,7 @@ export default function Hero() {
             animate={{ y: [0, -6, 0] }}
             transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
           >
-            <span className="stat-emoji">✨</span>
-            <span className="stat-label">Latest Tech</span>
+            <span className="stat-label">Latest Technology</span>
           </motion.div>
 
           {/* Decorative ring */}
@@ -272,10 +271,19 @@ export default function Hero() {
           z-index: 2;
           position: relative;
         }
-        .tooth-emoji {
-          font-size: 80px;
+        .visual-icon {
+          width: 96px;
+          height: 96px;
+          border-radius: 24px;
+          background: rgba(255,255,255,0.15);
+          display: grid;
+          place-items: center;
+          font-size: 1.65rem;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+          color: rgba(255,255,255,0.98);
           animation: floatBob 3s ease-in-out infinite;
-          filter: drop-shadow(0 8px 20px rgba(0,180,216,0.4));
+          box-shadow: inset 0 0 0 1px rgba(255,255,255,0.18);
         }
         .card-info {
           text-align: center;

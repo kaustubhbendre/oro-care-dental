@@ -2,12 +2,12 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import CountUp from 'react-countup';
-import { CheckCircle2 } from 'lucide-react';
+import { CheckCircle2, Star } from 'lucide-react';
 
 const stats = [
   { num: 15, suffix: '+', label: 'Years Experience' },
-  { num: 5000, suffix: '+', label: 'Patients Treated' },
-  { num: 140, suffix: '', label: 'Google Reviews' },
+  { num: 164, suffix: 'K+', label: 'Happy Patients' },
+  { num: 5000, suffix: '+', label: 'Smile Transformations' },
   { num: 5, suffix: '.0', label: 'Star Rating' },
 ];
 
@@ -37,10 +37,10 @@ export default function About() {
           >
             <div className="doc-card">
               <div className="doc-avatar">
-                <span>👨‍⚕️</span>
+                <span>Dr</span>
               </div>
               <div className="doc-badge">
-                <span>🏆</span>
+                <div className="badge-icon" />
                 <div>
                   <p className="badge-title">Top Rated</p>
                   <p className="badge-sub">Mumbai Dentist 2024</p>
@@ -61,7 +61,11 @@ export default function About() {
                 <div className="reviewer-avatar">P</div>
                 <div>
                   <p className="reviewer-name">Patient Review</p>
-                  <div className="reviewer-stars">★★★★★</div>
+                  <div className="reviewer-stars">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} size={14} fill="#c9a84c" color="#c9a84c" />
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
@@ -218,6 +222,13 @@ export default function About() {
           padding: 12px 20px;
           width: 100%;
           font-size: 1.5rem;
+        }
+        .badge-icon {
+          width: 12px;
+          height: 12px;
+          border-radius: 50%;
+          background: var(--teal);
+          box-shadow: 0 0 0 4px rgba(0,180,216,0.12);
         }
         .badge-title {
           color: var(--white);

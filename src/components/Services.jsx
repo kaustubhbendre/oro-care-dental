@@ -3,15 +3,38 @@ import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 
 const services = [
-  { icon: '🦷', title: 'Teeth Cleaning', desc: 'Professional scaling and polishing to keep your teeth healthy and bright.', color: '#e8f4fd' },
-  { icon: '✨', title: 'Teeth Whitening', desc: 'Advanced whitening treatments for a dazzling, confident smile.', color: '#fff8e8' },
-  { icon: '🔬', title: 'Root Canal', desc: 'Painless root canal treatment with the latest endodontic techniques.', color: '#f0fdf4' },
-  { icon: '👑', title: 'Veneers & Crowns', desc: 'Custom porcelain veneers and crowns for a perfect, natural-looking smile.', color: '#fdf4ff' },
-  { icon: '🧩', title: 'Dental Implants', desc: 'Permanent, natural-looking tooth replacements that last a lifetime.', color: '#fff0f0' },
-  { icon: '🎯', title: 'Cosmetic Dentistry', desc: 'Smile makeovers, bonding, and reshaping for aesthetic perfection.', color: '#f0f8ff' },
-  { icon: '🦴', title: 'Dentures & Bridges', desc: 'Comfortable, well-fitting dentures and bridges to restore your smile.', color: '#fff8f0' },
-  { icon: '🛡️', title: 'Mouth Guards', desc: 'Custom-fitted guards for sports protection and teeth grinding.', color: '#f5f0ff' },
-  { icon: '📷', title: 'X-Ray & Diagnosis', desc: 'Digital X-rays and comprehensive diagnosis for accurate treatment planning.', color: '#f0fff8' },
+  {
+    title: 'Root Canal Treatment',
+    image: '/images/services/root-canal.jpg',
+    description: 'Advanced painless treatment to save infected teeth and restore oral health.',
+  },
+  {
+    title: 'Teeth Whitening',
+    image: '/images/services/teeth-whitening.jpg',
+    description: 'Professional whitening solutions for a brighter and more confident smile.',
+  },
+  {
+    title: 'Braces & Aligners',
+    // Place AI-generated or sourced image at public/images/services/braces-aligners.jpg
+    image: '/images/services/braces-aligners.jpg',
+    description: 'Straighten teeth comfortably with modern braces and invisible aligners.',
+  },
+  {
+    title: 'Dental Implants',
+    // Place AI-generated or sourced image at public/images/services/dental-implants.jpg
+    image: '/images/services/dental-implants.jpg',
+    description: 'Permanent tooth replacement solutions that look and feel natural.',
+  },
+  {
+    title: 'Cosmetic Dentistry',
+    image: '/images/services/cosmetic-dentistry.jpg',
+    description: 'Enhance your smile aesthetics with veneers, contouring, and smile design.',
+  },
+  {
+    title: 'Oral Surgery',
+    image: '/images/services/oral-surgery.jpg',
+    description: 'Expert oral surgical procedures with precision and patient comfort.',
+  },
 ];
 
 const cardVariants = {
@@ -62,19 +85,24 @@ export default function Services() {
             <motion.div
               key={service.title}
               className="service-card"
-              style={{ '--card-bg': service.color }}
               custom={i}
               variants={cardVariants}
               initial="hidden"
               animate={inView ? 'visible' : 'hidden'}
-              whileHover={{ y: -6, boxShadow: '0 20px 40px rgba(10,74,110,0.15)' }}
+              whileHover={{ y: -5, boxShadow: '0 20px 40px rgba(0, 0, 0, 0.08)' }}
             >
-              <div className="service-icon">{service.icon}</div>
-              <h3 className="service-title">{service.title}</h3>
-              <p className="service-desc">{service.desc}</p>
-              <a href="#appointment" className="service-link">
-                Book Now →
-              </a>
+              <img 
+                src={service.image} 
+                alt={service.title} 
+                className="service-image"
+              />
+              <div className="service-content">
+                <h3 className="service-title">{service.title}</h3>
+                <p className="service-desc">{service.description}</p>
+                <a href="#appointment" className="service-link">
+                  Book Now →
+                </a>
+              </div>
             </motion.div>
           ))}
         </div>
@@ -113,57 +141,55 @@ export default function Services() {
           gap: 24px;
         }
         .service-card {
-          background: var(--card-bg, var(--cream));
-          border: 1px solid rgba(10,74,110,0.06);
-          border-radius: var(--radius-lg);
-          padding: 32px 28px;
+          background: #ffffff;
+          border-radius: 24px;
+          overflow: hidden;
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
           display: flex;
           flex-direction: column;
-          gap: 12px;
           cursor: pointer;
-          transition: all 0.3s ease;
-          position: relative;
-          overflow: hidden;
         }
-        .service-card::after {
-          content: '';
-          position: absolute;
-          bottom: 0; left: 0; right: 0;
-          height: 3px;
-          background: linear-gradient(90deg, var(--ocean), var(--teal));
-          transform: scaleX(0);
-          transition: transform 0.3s ease;
-          transform-origin: left;
+        .service-card:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
         }
-        .service-card:hover::after {
-          transform: scaleX(1);
+        .service-image {
+          width: 100%;
+          height: 240px;
+          object-fit: cover;
+          display: block;
         }
-        .service-icon {
-          font-size: 2.4rem;
-          line-height: 1;
+        .service-content {
+          padding: 28px 24px 32px;
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
         }
         .service-title {
           font-family: var(--font-display);
-          font-size: 1.1rem;
-          font-weight: 600;
+          font-size: 1.35rem;
+          font-weight: 700;
           color: var(--ocean-dark);
+          margin: 0;
         }
         .service-desc {
-          font-size: 0.88rem;
+          font-size: 0.98rem;
           color: var(--text-mid);
-          line-height: 1.6;
+          line-height: 1.8;
+          margin: 0;
           flex: 1;
         }
         .service-link {
-          font-size: 0.85rem;
+          font-size: 0.95rem;
           font-weight: 600;
-          color: var(--ocean);
-          transition: var(--transition);
+          color: var(--teal);
+          text-decoration: none;
+          transition: color 0.2s ease;
           align-self: flex-start;
         }
         .service-link:hover {
-          color: var(--teal);
-          gap: 8px;
+          color: var(--ocean);
         }
         @media (max-width: 900px) {
           .services-grid { grid-template-columns: repeat(2, 1fr); }

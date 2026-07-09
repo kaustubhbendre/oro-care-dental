@@ -1,7 +1,8 @@
-// src/components/Navbar.jsx
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Phone, Menu, X } from 'lucide-react';
+import { Phone, Menu, X, User } from 'lucide-react';
+import Login from './Login';
+import PatientDashboard from './PatientDashboard';
 
 const navLinks = [
   { label: 'Home', href: '#home' },
@@ -14,12 +15,31 @@ const navLinks = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userEmail, setUserEmail] = useState('');
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
+
+  const handleLoginSuccess = (user) => {
+    setUserEmail(user.email);
+    setIsLoggedIn(true);
+    setShowLogin(false);
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setUserEmail('');
+    localStorage.removeItem('patientEmail');
+  };
+
+  if (isLoggedIn) {
+    return <PatientDashboard userEmail={userEmail} onLogout={handleLogout} />;
+  }
 
   return (
     <>
@@ -33,7 +53,7 @@ export default function Navbar() {
           {/* Logo */}
           <a href="#home" className="nav-logo">
             <div className="logo-icon">
-              <span>🦷</span>
+              <span>OC</span>
             </div>
             <div className="logo-text">
               <span className="logo-title">Oro-Care</span>
@@ -52,12 +72,19 @@ export default function Navbar() {
             ))}
           </ul>
 
-          {/* CTA */}
+          {/* CTA + Login */}
           <div className="nav-actions">
             <a href="tel:+919967869453" className="nav-phone">
               <Phone size={16} />
               <span>+91 99678 69453</span>
             </a>
+            <button
+              onClick={() => setShowLogin(true)}
+              className="nav-login-btn"
+              title="Patient Login"
+            >
+              <User size={18} />
+            </button>
             <a href="#appointment" className="btn-primary nav-btn">
               Book Appointment
             </a>
@@ -94,6 +121,12 @@ export default function Navbar() {
                 </motion.li>
               ))}
             </ul>
+            <button
+              onClick={() => { setShowLogin(true); setMenuOpen(false); }}
+              className="mobile-login-btn"
+            >
+              <User size={18} /> Patient Login
+            </button>
             <a href="#appointment" className="btn-primary" onClick={() => setMenuOpen(false)}>
               Book Appointment
             </a>
@@ -103,6 +136,9 @@ export default function Navbar() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Login Modal */}
+      {showLogin && <Login onClose={() => setShowLogin(false)} onLoginSuccess={handleLoginSuccess} />}
 
       <style>{`
         .navbar {
@@ -190,6 +226,24 @@ export default function Navbar() {
           transition: var(--transition);
         }
         .nav-phone:hover { color: var(--teal); }
+        .nav-login-btn {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 40px;
+          height: 40px;
+          background: linear-gradient(135deg, var(--ocean), var(--teal));
+          color: white;
+          border: none;
+          border-radius: 50%;
+          cursor: pointer;
+          transition: var(--transition);
+          box-shadow: 0 4px 15px rgba(0,180,216,0.3);
+        }
+        .nav-login-btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 20px rgba(0,180,216,0.4);
+        }
         .nav-btn {
           padding: 10px 22px !important;
           font-size: 0.85rem !important;
@@ -229,6 +283,24 @@ export default function Navbar() {
         .mobile-menu ul a:hover {
           background: rgba(10,74,110,0.07);
           color: var(--ocean);
+        }
+        .mobile-login-btn {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          width: 100%;
+          padding: 12px 16px;
+          background: linear-gradient(135deg, var(--ocean), var(--teal));
+          color: white;
+          border: none;
+          border-radius: var(--radius-sm);
+          font-size: 1rem;
+          font-weight: 600;
+          cursor: pointer;
+          transition: var(--transition);
+        }
+        .mobile-login-btn:hover {
+          transform: translateY(-2px);
         }
         .mobile-phone {
           display: flex;
