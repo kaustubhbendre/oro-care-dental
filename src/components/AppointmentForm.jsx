@@ -1,10 +1,11 @@
 // src/components/AppointmentForm.jsx
+import emailjs from '@emailjs/browser';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import toast from 'react-hot-toast';
 import { CalendarCheck, Phone, Mail, Zap, Clock, DollarSign, MapPin, CheckCircle2 } from 'lucide-react';
-import { createAppointment, isSupabaseConfigured } from '../lib/supabase';
+import { createAppointment, isSupabaseConfigured } from '../lib/su...'
 
 const services = [
   'Teeth Cleaning', 'Teeth Whitening', 'Root Canal Treatment',
@@ -86,6 +87,26 @@ export default function AppointmentForm() {
     setSubmitting(true);
     try {
       await createAppointment(formData);
+
+      try {
+        await emailjs.send(
+          'service_2c8sj8t',
+          'template_7q4o4ka',
+          {
+            patient_name: formData.name,
+            patient_phone: formData.phone,
+            patient_email: formData.email || 'Not provided',
+            service: formData.service,
+            date: formData.date,
+            time: formData.time_slot,
+            message: formData.message || 'None',
+          },
+          'A-rLV3zDOuZKFf4Fr'
+        );
+      } catch (emailErr) {
+        console.error('Email notification failed:', emailErr);
+      }
+
       toast.success(isSupabaseConfigured
         ? 'Appointment booked! We\'ll confirm shortly.'
         : 'Appointment saved locally. Connect Supabase later to sync it online.');
@@ -112,7 +133,7 @@ export default function AppointmentForm() {
       setSubmitting(false);
     }
   };
-
+  
   const demoMode = !isSupabaseConfigured;
 
   // Get tomorrow's date as minimum
