@@ -96,9 +96,9 @@ export default function AppointmentForm() {
             patient_name: formData.name,
             patient_phone: formData.phone,
             patient_email: formData.email || 'Not provided',
-            service: formData.service,        ← this line
-            date: formData.date,              ← this line
-            time: formData.time_slot,         ← this line
+            service_type: formData.service,
+            appt_date: formData.date,
+            appt_time: formData.time_slot,
             message: formData.message || 'None',
           },
           'A-rLV3zDOuZKFf4Fr'
