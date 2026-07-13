@@ -51,9 +51,11 @@ export default function Navbar() {
       >
         <div className="container nav-inner">
           {/* Logo */}
-          <a href="#home" className="nav-logo">
+         <a href="#home" className="nav-logo">
             <div className="logo-icon">
-              <span>OC</span>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C9.5 2 7.8 3.2 6.5 3.2C5 3.2 3.5 4.5 3.5 7C3.5 9 4 10.5 4.3 12.5C4.6 14.5 4.8 17 5.5 19C6 20.5 6.8 22 8 22C9.2 22 9.3 19.5 9.7 17.8C10 16.5 10.5 15.5 12 15.5C13.5 15.5 14 16.5 14.3 17.8C14.7 19.5 14.8 22 16 22C17.2 22 18 20.5 18.5 19C19.2 17 19.4 14.5 19.7 12.5C20 10.5 20.5 9 20.5 7C20.5 4.5 19 3.2 17.5 3.2C16.2 3.2 14.5 2 12 2Z"/>
+              </svg>
             </div>
             <div className="logo-text">
               <span className="logo-title">Oro-Care</span>
