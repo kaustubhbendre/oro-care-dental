@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import toast from 'react-hot-toast';
 import { CalendarCheck, Phone, Mail, Zap, Clock, DollarSign, MapPin, CheckCircle2 } from 'lucide-react';
-import { createAppointment, isSupabaseConfigured } from '../lib/su...'
+import { createAppointment, isSupabaseConfigured } from '../lib/supabase';
 
 const services = [
   'Teeth Cleaning', 'Teeth Whitening', 'Root Canal Treatment',
@@ -133,7 +133,7 @@ export default function AppointmentForm() {
       setSubmitting(false);
     }
   };
-  
+
   const demoMode = !isSupabaseConfigured;
 
   // Get tomorrow's date as minimum
