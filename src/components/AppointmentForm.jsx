@@ -107,6 +107,26 @@ export default function AppointmentForm() {
         console.error('Email notification failed:', emailErr);
       }
 
+      // Send a confirmation + thank you email to the patient (only if they gave an email)
+      if (formData.email) {
+        try {
+          await emailjs.send(
+            'service_2c8sj8t',
+            'template_xdzk11f', // patient confirmation template
+            {
+              patient_name: formData.name,
+              patient_email: formData.email,
+              service_type: formData.service,
+              appt_date: formData.date,
+              appt_time: formData.time_slot,
+            },
+            'A-rLV3zDOuZKFf4Fr'
+          );
+        } catch (patientEmailErr) {
+          console.error('Patient confirmation email failed:', patientEmailErr);
+        }
+      }
+
       toast.success(isSupabaseConfigured
         ? 'Appointment booked! We\'ll confirm shortly.'
         : 'Appointment saved locally. Connect Supabase later to sync it online.');
@@ -236,7 +256,7 @@ export default function AppointmentForm() {
                     value={formData.name}
                     onChange={handleFieldChange}
                   />
-                  {errors.name && <span className="form-error">{errors.name.message}</span>}
+                  {errors.name && <span className="form-error">{errors.name}</span>}
                 </div>
                 <div className="form-group">
                   <label>Phone Number *</label>
@@ -248,7 +268,7 @@ export default function AppointmentForm() {
                     value={formData.phone}
                     onChange={handleFieldChange}
                   />
-                  {errors.phone && <span className="form-error">{errors.phone.message}</span>}
+                  {errors.phone && <span className="form-error">{errors.phone}</span>}
                 </div>
               </div>
 
@@ -262,7 +282,7 @@ export default function AppointmentForm() {
                   value={formData.email}
                   onChange={handleFieldChange}
                 />
-                {errors.email && <span className="form-error">{errors.email.message}</span>}
+                {errors.email && <span className="form-error">{errors.email}</span>}
               </div>
 
               <div className="form-group">
@@ -278,7 +298,7 @@ export default function AppointmentForm() {
                     <option key={s} value={s}>{s}</option>
                   ))}
                 </select>
-                {errors.service && <span className="form-error">{errors.service.message}</span>}
+                {errors.service && <span className="form-error">{errors.service}</span>}
               </div>
 
               <div className="form-row">
@@ -292,7 +312,7 @@ export default function AppointmentForm() {
                     value={formData.date}
                     onChange={handleFieldChange}
                   />
-                  {errors.date && <span className="form-error">{errors.date.message}</span>}
+                  {errors.date && <span className="form-error">{errors.date}</span>}
                 </div>
                 <div className="form-group">
                   <label>Preferred Time *</label>
@@ -307,7 +327,7 @@ export default function AppointmentForm() {
                       <option key={t} value={t}>{t}</option>
                     ))}
                   </select>
-                  {errors.time_slot && <span className="form-error">{errors.time_slot.message}</span>}
+                  {errors.time_slot && <span className="form-error">{errors.time_slot}</span>}
                 </div>
               </div>
 
