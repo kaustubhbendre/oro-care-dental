@@ -89,20 +89,19 @@ export default function AppointmentForm() {
       await createAppointment(formData);
 
       try {
-        await emailjs.send(
-          'service_2c8sj8t',
-          'template_7q4o4ka',
-          {
-            patient_name: formData.name,
-            patient_phone: formData.phone,
-            patient_email: formData.email || 'Not provided',
-            service_type: formData.service,
-            appt_date: formData.date,
-            appt_time: formData.time_slot,
-            message: formData.message || 'None',
-          },
-          'A-rLV3zDOuZKFf4Fr'
-        );
+       await emailjs.send(
+  'service_2c8sj8t',
+  'template_xdzk11f', // patient confirmation template
+  {
+    patient_name: formData.name,
+    patient_email: formData.email,
+    service_type: formData.service,
+    appt_date: formData.date,
+    appt_time: formData.time_slot,
+    doctor_name: 'Dr. Shashank Kumar',
+  },
+  'A-rLV3zDOuZKFf4Fr'
+);
       } catch (emailErr) {
         console.error('Email notification failed:', emailErr);
       }
@@ -119,6 +118,7 @@ export default function AppointmentForm() {
               service_type: formData.service,
               appt_date: formData.date,
               appt_time: formData.time_slot,
+              doctor_name: 'Dr. Shashank Kumar',
             },
             'A-rLV3zDOuZKFf4Fr'
           );
