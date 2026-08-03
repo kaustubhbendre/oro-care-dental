@@ -203,6 +203,7 @@ npm run build
 - Improved site copy to make the booking flow clearer and more welcoming.
 - Added better form validation messaging and accessibility hints.
 - Updated admin dashboard wording to guide Supabase setup.
+- Refined review and service copy for a warmer, more personal tone.
 - Verified production build succeeds after the changes.
 
 ---

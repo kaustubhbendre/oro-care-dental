@@ -6,34 +6,34 @@ const services = [
   {
     title: 'Root Canal Treatment',
     image: '/images/services/root-canal.jpg',
-    description: 'Advanced painless treatment to save infected teeth and restore oral health.',
+    description: 'Gentle root canal care to save your tooth and ease discomfort with modern comfort-focused techniques.',
   },
   {
     title: 'Teeth Whitening',
     image: '/images/services/teeth-whitening.jpg',
-    description: 'Professional whitening solutions for a brighter and more confident smile.',
+    description: 'Brighten your smile safely with professional whitening that looks natural and fresh.',
   },
   {
     title: 'Braces & Aligners',
     // Place AI-generated or sourced image at public/images/services/braces-aligners.jpg
     image: '/images/services/braces-aligners.jpg',
-    description: 'Straighten teeth comfortably with modern braces and invisible aligners.',
+    description: 'Comfortable braces and clear aligners that gently straighten teeth while fitting your lifestyle.',
   },
   {
     title: 'Dental Implants',
     // Place AI-generated or sourced image at public/images/services/dental-implants.jpg
     image: '/images/services/dental-implants.jpg',
-    description: 'Permanent tooth replacement solutions that look and feel natural.',
+    description: 'Natural-feeling implants that restore missing teeth and bring back your confident smile.',
   },
   {
     title: 'Cosmetic Dentistry',
     image: '/images/services/cosmetic-dentistry.jpg',
-    description: 'Enhance your smile aesthetics with veneers, contouring, and smile design.',
+    description: 'Personalized cosmetic treatments like veneers and smile design to refresh your look.',
   },
   {
     title: 'Oral Surgery',
     image: '/images/services/oral-surgery.jpg',
-    description: 'Expert oral surgical procedures with precision and patient comfort.',
+    description: 'Careful oral surgery with thoughtful planning and a focus on your comfort every step of the way.',
   },
 ];
 
@@ -59,7 +59,7 @@ export default function Services() {
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.5 }}
           >
-            What We Offer
+            Your Care Options
           </motion.span>
           <motion.h2
             className="heading-lg"
@@ -67,7 +67,7 @@ export default function Services() {
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            Comprehensive Dental Services
+            Gentle Dental Care for Every Smile
           </motion.h2>
           <motion.p
             className="section-desc"
@@ -75,8 +75,8 @@ export default function Services() {
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            From routine checkups to advanced cosmetic procedures — we have everything 
-            to make your smile shine.
+            From gentle checkups to smile-transforming treatments, everything is designed 
+            to help you feel confident and cared for.
           </motion.p>
         </div>
 
@@ -100,7 +100,7 @@ export default function Services() {
                 <h3 className="service-title">{service.title}</h3>
                 <p className="service-desc">{service.description}</p>
                 <a href="#appointment" className="service-link">
-                  Book Your Visit →
+                  Request a Consultation →
                 </a>
               </div>
             </motion.div>
