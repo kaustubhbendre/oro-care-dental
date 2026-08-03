@@ -79,7 +79,7 @@ export default function About() {
               animate={inView ? { opacity: 1, x: 0 } : {}}
               transition={{ duration: 0.5 }}
             >
-              Meet The Doctor
+              Meet Your Dentist
             </motion.span>
 
             <motion.h2
@@ -129,7 +129,7 @@ export default function About() {
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.7, duration: 0.5 }}
             >
-              Schedule a Consultation
+              Book a Consultation
             </motion.a>
           </div>
         </div>

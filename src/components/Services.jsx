@@ -100,7 +100,7 @@ export default function Services() {
                 <h3 className="service-title">{service.title}</h3>
                 <p className="service-desc">{service.description}</p>
                 <a href="#appointment" className="service-link">
-                  Book Now →
+                  Book Your Visit →
                 </a>
               </div>
             </motion.div>

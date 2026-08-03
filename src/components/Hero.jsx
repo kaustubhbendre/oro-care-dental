@@ -28,7 +28,7 @@ export default function Hero() {
           <motion.div
             custom={0} variants={floatVariants} initial="initial" animate="animate"
           >
-            <span className="section-tag">Trusted by 164K+ patients</span>
+            <motion.span className="section-tag">Trusted by over 164K patients</motion.span>
           </motion.div>
 
           <motion.h1
@@ -54,11 +54,11 @@ export default function Hero() {
           >
             <a href="#appointment" className="btn-primary hero-cta">
               <CalendarCheck size={18} />
-              Book Appointment
+              Schedule a Visit
             </a>
             <a href="tel:+919967869453" className="btn-outline">
               <Phone size={18} />
-              Call Now
+              Call Us
             </a>
           </motion.div>
 

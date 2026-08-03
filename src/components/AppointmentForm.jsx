@@ -47,29 +47,29 @@ export default function AppointmentForm() {
     const validationErrors = {};
 
     if (!formData.name.trim()) {
-      validationErrors.name = 'Name is required';
+      validationErrors.name = 'Please enter your full name';
     }
 
     if (!formData.phone.trim()) {
-      validationErrors.phone = 'Phone is required';
+      validationErrors.phone = 'Please enter your phone number';
     } else if (!/^[0-9+\s-]{10,15}$/.test(formData.phone)) {
-      validationErrors.phone = 'Invalid phone number';
+      validationErrors.phone = 'Please enter a valid phone number';
     }
 
     if (formData.email && !/^\S+@\S+\.\S+$/.test(formData.email)) {
-      validationErrors.email = 'Invalid email';
+      validationErrors.email = 'Please enter a valid email address';
     }
 
     if (!formData.service) {
-      validationErrors.service = 'Please select a service';
+      validationErrors.service = 'Please choose a service';
     }
 
     if (!formData.date) {
-      validationErrors.date = 'Date is required';
+      validationErrors.date = 'Please pick a preferred date';
     }
 
     if (!formData.time_slot) {
-      validationErrors.time_slot = 'Time is required';
+      validationErrors.time_slot = 'Please select a time slot';
     }
 
     return validationErrors;
@@ -86,7 +86,10 @@ export default function AppointmentForm() {
 
     setSubmitting(true);
     try {
-      await createAppointment(formData);
+      // Normalize phone before saving to database
+      const normalizePhone = (phone) => phone.replace(/\s+/g, '').trim();
+      const payload = { ...formData, phone: normalizePhone(formData.phone) };
+      await createAppointment(payload);
 
       try {
         await emailjs.send(
@@ -94,7 +97,7 @@ export default function AppointmentForm() {
           'template_7q4o4ka', // clinic notification template
           {
             patient_name: formData.name,
-            patient_phone: formData.phone,
+            patient_phone: payload.phone,
             patient_email: formData.email || 'Not provided',
             service_type: formData.service,
             appt_date: formData.date,
@@ -129,8 +132,8 @@ export default function AppointmentForm() {
       }
 
       toast.success(isSupabaseConfigured
-        ? 'Appointment booked! We\'ll confirm shortly.'
-        : 'Appointment saved locally. Connect Supabase later to sync it online.');
+        ? "Thanks — we've received your request. We'll confirm within 2 hours."
+        : 'Saved locally — connect Supabase to sync and access admin features.');
       setSuccess(true);
       setFormData({
         name: '',
@@ -146,9 +149,9 @@ export default function AppointmentForm() {
     } catch (err) {
       console.error(err);
       if (err?.message?.includes('Database not configured')) {
-        toast.error('Database not set up. Please configure Supabase in .env file.');
+        toast.error('Database not set up. Please configure Supabase (see README).');
       } else {
-        toast.error(err?.message || 'Something went wrong. Please call us directly.');
+        toast.error(err?.message || 'Something went wrong. Please call us to book directly.');
       }
     } finally {
       setSubmitting(false);
@@ -227,14 +230,14 @@ export default function AppointmentForm() {
         >
           {demoMode && !success && (
             <div className="demo-warning">
-              <strong>Local mode:</strong> Your booking is being saved on this device for now. Connect Supabase later to sync it online and use the admin dashboard fully.
+              <strong>Local mode:</strong> Your booking is saved on this device for now. Connect Supabase later to sync it and use the admin dashboard.
             </div>
           )}
           {success ? (
             <div className="success-state">
               <div className="success-icon"><CheckCircle2 size={36} /></div>
-              <h3>Appointment Requested!</h3>
-              <p>Thank you! We'll call you within 2 hours to confirm your appointment.</p>
+              <h3>Thanks — request received!</h3>
+              <p>We've received your request and will contact you within 2 hours to confirm.</p>
               <button className="btn-primary" onClick={() => setSuccess(false)}>
                 Book Another
               </button>
@@ -252,6 +255,8 @@ export default function AppointmentForm() {
                   <input
                     type="text"
                     name="name"
+                    aria-label="Full name"
+                    required
                     placeholder="Your full name"
                     className={errors.name ? 'error' : ''}
                     value={formData.name}
@@ -264,6 +269,8 @@ export default function AppointmentForm() {
                   <input
                     type="tel"
                     name="phone"
+                    aria-label="Phone number"
+                    required
                     placeholder="+91 XXXXX XXXXX"
                     className={errors.phone ? 'error' : ''}
                     value={formData.phone}
@@ -290,6 +297,8 @@ export default function AppointmentForm() {
                 <label>Service Required *</label>
                 <select
                   name="service"
+                  aria-label="Service required"
+                  required
                   className={errors.service ? 'error' : ''}
                   value={formData.service}
                   onChange={handleFieldChange}
@@ -308,6 +317,8 @@ export default function AppointmentForm() {
                   <input
                     type="date"
                     name="date"
+                    aria-label="Preferred date"
+                    required
                     min={minDate}
                     className={errors.date ? 'error' : ''}
                     value={formData.date}
@@ -319,6 +330,8 @@ export default function AppointmentForm() {
                   <label>Preferred Time *</label>
                   <select
                     name="time_slot"
+                    aria-label="Preferred time"
+                    required
                     className={errors.time_slot ? 'error' : ''}
                     value={formData.time_slot}
                     onChange={handleFieldChange}
@@ -354,13 +367,13 @@ export default function AppointmentForm() {
                   </>
                 ) : (
                   <>
-                    <CalendarCheck size={18} /> Confirm Appointment
+                    <CalendarCheck size={18} /> Request Appointment
                   </>
                 )}
               </button>
 
               <p className="form-note">
-                Your information is private and secure. We'll never share it.
+                We keep your information private and secure. We'll never share it without your permission.
               </p>
             </form>
           )}

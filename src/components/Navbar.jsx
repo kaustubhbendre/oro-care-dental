@@ -58,7 +58,7 @@ export default function Navbar() {
               <span>+91 99678 69453</span>
             </a>
             <a href="#appointment" className="btn-primary nav-btn">
-              Book Appointment
+              Book Your Visit
             </a>
           </div>
 
@@ -94,7 +94,7 @@ export default function Navbar() {
               ))}
             </ul>
             <a href="#appointment" className="btn-primary" onClick={() => setMenuOpen(false)}>
-              Book Appointment
+              Book Your Visit
             </a>
             <a href="tel:+919967869453" className="mobile-phone">
               <Phone size={16} /> +91 99678 69453

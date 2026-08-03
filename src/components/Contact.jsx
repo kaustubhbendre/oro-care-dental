@@ -92,7 +92,7 @@ export default function Contact() {
               rel="noopener noreferrer"
               className="directions-btn"
             >
-              Get Directions <ArrowRight size={16} />
+              Open Directions <ArrowRight size={16} />
             </a>
           </motion.div>
         </div>

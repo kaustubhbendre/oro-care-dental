@@ -55,7 +55,7 @@ export default function AdminLogin() {
     event.preventDefault();
     setLoginError('');
     if (!isSupabaseConfigured) {
-      setLoginError('Supabase is not configured. Please add environment variables and redeploy.');
+      setLoginError('Supabase is not configured yet yet. Please add environment variables and redeploy.');
       return;
     }
 
@@ -67,7 +67,7 @@ export default function AdminLogin() {
       }
       navigate('/admin');
     } catch (err) {
-      setLoginError(err?.message || 'Unable to sign in. Please check your credentials.');
+      setLoginError(err?.message || 'Unable to sign in. Please check your email and password.');
     } finally {
       setAuthenticating(false);
     }

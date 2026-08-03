@@ -12,7 +12,7 @@ export default function Login({ onClose, onLoginSuccess }) {
       onLoginSuccess({ email });
       onClose();
     } else {
-      setError('Please enter email and password');
+      setError('Please enter both email and password.');
     }
   };
 
