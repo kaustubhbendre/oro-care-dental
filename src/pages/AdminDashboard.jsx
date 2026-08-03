@@ -143,14 +143,14 @@ export default function AdminDashboard() {
         <div className="container admin-body">
           <div className="empty-state">
             <span>⚙️</span>
-            <p>Database Not Configured</p>
-            <small>Please set up Supabase in your <code>.env</code> file to use the admin dashboard.</small>
+            <p>Supabase is not configured yet</p>
+            <small>Set up Supabase in your <code>.env</code> file before using the admin dashboard.</small>
             <ul className="admin-help-list">
               <li>Copy <code>.env.example</code> to <code>.env</code></li>
-              <li>Add <code>REACT_APP_SUPABASE_URL</code> and <code>REACT_APP_SUPABASE_ANON_KEY</code></li>
-              <li>Deploy again on Vercel with the same variables</li>
+              <li>Add your <code>REACT_APP_SUPABASE_URL</code> and <code>REACT_APP_SUPABASE_ANON_KEY</code></li>
+              <li>Redeploy the site if using Vercel</li>
             </ul>
-            <a href="https://supabase.com" target="_blank" rel="noreferrer" className="btn-primary" style={{ marginTop: '16px' }}>Go to Supabase</a>
+            <a href="https://supabase.com" target="_blank" rel="noreferrer" className="btn-primary" style={{ marginTop: '16px' }}>Open Supabase</a>
           </div>
         </div>
       </div>
@@ -159,7 +159,7 @@ export default function AdminDashboard() {
 
   const handleStatusChange = async (id, newStatus) => {
     if (!isSupabaseConfigured) {
-      toast.error('Database not configured. Please set up Supabase in .env file.');
+      toast.error('Supabase is not configured yet. Please set it up in .env.');
       return;
     }
 
