@@ -285,7 +285,7 @@ export default function AppointmentForm() {
                 <input
                   type="email"
                   name="email"
-                  placeholder="your@email.com (optional)"
+                  placeholder="your@email.com "
                   className={errors.email ? 'error' : ''}
                   value={formData.email}
                   onChange={handleFieldChange}
