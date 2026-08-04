@@ -17,6 +17,12 @@ A polished, responsive dental clinic website for **Dr. Shashank Kumar** at **Oro
 
 ## 🚀 Quick Start
 
+This project is a React-based clinic website. The main flow is:
+1. Open the homepage
+2. Browse treatments and services
+3. Scroll to the appointment form
+4. Submit a booking request
+
 ### Step 1 — Install Node.js
 Download from https://nodejs.org (version 18+ recommended)
 
