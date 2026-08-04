@@ -1,5 +1,5 @@
 // src/App.js
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { HashRouter, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import Home from './pages/Home';
 import AdminDashboard from './pages/AdminDashboard';
@@ -8,7 +8,7 @@ import './styles/global.css';
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Toaster
         position="top-right"
         toastOptions={{
@@ -32,6 +32,6 @@ export default function App() {
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin" element={<AdminDashboard />} />
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
