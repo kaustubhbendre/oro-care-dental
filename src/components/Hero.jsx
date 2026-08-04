@@ -1,7 +1,7 @@
 // src/components/Hero.jsx
 import { motion } from 'framer-motion';
 import { Phone, MapPin, Star, ChevronDown, CalendarCheck } from 'lucide-react';
-import { scrollToAppointment } from '../utils/scrollHelpers';
+import { scrollToAppointment, scrollToSection } from '../utils/scrollHelpers';
 
 const floatVariants = {
   initial: { opacity: 0, y: 40 },
