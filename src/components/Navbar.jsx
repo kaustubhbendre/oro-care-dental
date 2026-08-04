@@ -45,7 +45,7 @@ export default function Navbar() {
               <span className="logo-title">Oro-Care</span>
               <span className="logo-sub">Dental Clinic</span>
             </div>
-          </a>
+          </button>
 
           {/* Desktop Links */}
           <ul className="nav-links">
