@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/oro-care-dental/static/css/main.12e9f611.css",
+    "main.js": "/oro-care-dental/static/js/main.789d870f.js",
+    "index.html": "/oro-care-dental/index.html",
+    "main.12e9f611.css.map": "/oro-care-dental/static/css/main.12e9f611.css.map",
+    "main.789d870f.js.map": "/oro-care-dental/static/js/main.789d870f.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.12e9f611.css",
+    "static/js/main.789d870f.js"
+  ]
+}
