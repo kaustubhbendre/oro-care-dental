@@ -122,15 +122,16 @@ export default function About() {
               ))}
             </motion.ul>
 
-            <motion.a
-              href="#appointment"
+            <motion.button
+              type="button"
+              onClick={() => document.getElementById('appointment')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
               className="btn-primary"
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.7, duration: 0.5 }}
             >
               Book a Consultation
-            </motion.a>
+            </motion.button>
           </div>
         </div>
 

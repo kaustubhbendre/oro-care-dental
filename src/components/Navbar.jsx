@@ -2,6 +2,13 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Phone, Menu, X } from 'lucide-react';
 
+const scrollToSection = (id) => {
+  const target = document.getElementById(id);
+  if (target) {
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+};
+
 const navLinks = [
   { label: 'Home', href: '#home' },
   { label: 'Services', href: '#services' },
@@ -30,7 +37,7 @@ export default function Navbar() {
       >
         <div className="container nav-inner">
           {/* Logo */}
-         <a href="#home" className="nav-logo">
+         <button type="button" onClick={() => scrollToSection('home')} className="nav-logo btn-reset">
             <div className="logo-icon">
               <span style={{ fontSize: '24px' }}>🦷</span>
             </div>
@@ -44,9 +51,9 @@ export default function Navbar() {
           <ul className="nav-links">
             {navLinks.map((link) => (
               <li key={link.label}>
-                <a href={link.href} className="nav-link">
+                <button type="button" onClick={() => scrollToSection(link.href.replace('#', ''))} className="nav-link btn-reset">
                   {link.label}
-                </a>
+                </button>
               </li>
             ))}
           </ul>
@@ -57,9 +64,9 @@ export default function Navbar() {
               <Phone size={16} />
               <span>+91 99678 69453</span>
             </a>
-            <a href="#appointment" className="btn-primary nav-btn">
+            <button type="button" onClick={() => scrollToSection('appointment')} className="btn-primary nav-btn btn-reset">
               Book Your Visit
-            </a>
+            </button>
           </div>
 
           {/* Hamburger */}
@@ -87,15 +94,15 @@ export default function Navbar() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.07 }}
                 >
-                  <a href={link.href} onClick={() => setMenuOpen(false)}>
+                  <button type="button" onClick={() => { setMenuOpen(false); scrollToSection(link.href.replace('#', '')); }} className="btn-reset mobile-nav-link">
                     {link.label}
-                  </a>
+                  </button>
                 </motion.li>
               ))}
             </ul>
-            <a href="#appointment" className="btn-primary" onClick={() => setMenuOpen(false)}>
+            <button type="button" onClick={() => { setMenuOpen(false); scrollToSection('appointment'); }} className="btn-primary btn-reset">
               Book Your Visit
-            </a>
+            </button>
             <a href="tel:+919967869453" className="mobile-phone">
               <Phone size={16} /> +91 99678 69453
             </a>
@@ -161,6 +168,14 @@ export default function Navbar() {
           gap: 4px;
           list-style: none;
         }
+        .btn-reset {
+          background: none;
+          border: none;
+          padding: 0;
+          font: inherit;
+          cursor: pointer;
+          text-decoration: none;
+        }
         .nav-link {
           padding: 8px 14px;
           font-size: 0.9rem;
@@ -218,6 +233,17 @@ export default function Navbar() {
         }
         .mobile-menu ul a {
           display: block;
+          padding: 12px 16px;
+          font-size: 1.1rem;
+          font-weight: 600;
+          color: var(--text-dark);
+          border-radius: var(--radius-sm);
+          transition: var(--transition);
+        }
+        .mobile-nav-link {
+          display: block;
+          width: 100%;
+          text-align: left;
           padding: 12px 16px;
           font-size: 1.1rem;
           font-weight: 600;

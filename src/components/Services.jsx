@@ -99,9 +99,9 @@ export default function Services() {
               <div className="service-content">
                 <h3 className="service-title">{service.title}</h3>
                 <p className="service-desc">{service.description}</p>
-                <a href="#appointment" className="service-link">
+                <button type="button" onClick={() => document.getElementById('appointment')?.scrollIntoView({ behavior: 'smooth', block: 'start' })} className="service-link btn-reset">
                   Request a Consultation →
-                </a>
+                </button>
               </div>
             </motion.div>
           ))}

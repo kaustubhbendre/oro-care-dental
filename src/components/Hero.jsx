@@ -2,6 +2,13 @@
 import { motion } from 'framer-motion';
 import { Phone, MapPin, Star, ChevronDown, CalendarCheck } from 'lucide-react';
 
+const scrollToAppointment = () => {
+  const target = document.getElementById('appointment');
+  if (target) {
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+};
+
 const floatVariants = {
   initial: { opacity: 0, y: 40 },
   animate: (i) => ({
@@ -52,10 +59,10 @@ export default function Hero() {
             className="hero-actions"
             custom={3} variants={floatVariants} initial="initial" animate="animate"
           >
-            <a href="#appointment" className="btn-primary hero-cta">
+            <button type="button" onClick={scrollToAppointment} className="btn-primary hero-cta">
               <CalendarCheck size={18} />
               Schedule a Visit
-            </a>
+            </button>
             <a href="tel:+919967869453" className="btn-outline">
               <Phone size={18} />
               Call Us
@@ -132,15 +139,16 @@ export default function Hero() {
       </div>
 
       {/* Scroll indicator */}
-      <motion.a
-        href="#services"
+      <motion.button
+        type="button"
+        onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
         className="scroll-indicator"
         animate={{ y: [0, 8, 0] }}
         transition={{ duration: 2, repeat: Infinity }}
       >
         <span>Explore</span>
         <ChevronDown size={20} />
-      </motion.a>
+      </motion.button>
 
       <style>{`
         .hero {
