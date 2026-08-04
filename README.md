@@ -1,22 +1,21 @@
 # 🦷 Oro-Care Dental Clinic Website
 
-A professional, animated dental clinic website for **Dr. Shashank Kumar** at **Oro-Care Dental Clinic, Mumbai**.
+A polished, responsive dental clinic website for **Dr. Shashank Kumar** at **Oro-Care Dental Clinic, Mumbai**.
 
-## ✨ Features
+🌐 Live site: https://oro-care-dental.vercel.app/
 
-- **Animated Hero Section** with floating stats and doctor info
-- **9 Services** displayed in beautiful animated cards
-- **About Section** with live counters (5000+ patients, 15+ years)
-- **6 Patient Reviews** pulled from Google reviews
-- **Appointment Booking Form** with full validation
-- **Admin Dashboard** at `/admin` to manage all bookings
-- **Database** powered by Supabase (free tier available)
-- **Fully Responsive** — works on mobile, tablet, desktop
-- **SEO Ready** — proper meta tags, semantic HTML
+## ✨ Highlights
+
+- Beautiful animated hero section with clear calls to action
+- Full treatment showcase with consultation buttons
+- Smooth appointment form flow for patient bookings
+- Admin dashboard for managing appointments
+- Responsive design for mobile, tablet, and desktop
+- SEO-friendly structure and metadata
 
 ---
 
-## 🚀 Quick Start (VS Code)
+## 🚀 Quick Start
 
 ### Step 1 — Install Node.js
 Download from https://nodejs.org (version 18+ recommended)
@@ -84,7 +83,10 @@ npm start
 
 Open http://localhost:3000 🎉
 
-### Step 7 — Test the setup
+### Step 7 — Deploy
+This project is ready for Vercel deployment. Connect the repository and deploy the app from the main branch.
+
+### Step 8 — Test the setup
 1. Visit http://localhost:3000 and book a test appointment
 2. Visit http://localhost:3000/admin/login and sign in with your admin credentials
 3. Check that appointments appear in the admin dashboard
