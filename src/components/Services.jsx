@@ -1,6 +1,7 @@
 // src/components/Services.jsx
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import { scrollToAppointment } from '../utils/scrollHelpers';
 
 const services = [
   {
@@ -99,7 +100,7 @@ export default function Services() {
               <div className="service-content">
                 <h3 className="service-title">{service.title}</h3>
                 <p className="service-desc">{service.description}</p>
-                <button type="button" onClick={() => document.getElementById('appointment')?.scrollIntoView({ behavior: 'smooth', block: 'start' })} className="service-link btn-reset">
+                <button type="button" onClick={scrollToAppointment} className="service-link btn-reset">
                   Request a Consultation →
                 </button>
               </div>

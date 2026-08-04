@@ -1,13 +1,7 @@
 // src/components/Hero.jsx
 import { motion } from 'framer-motion';
 import { Phone, MapPin, Star, ChevronDown, CalendarCheck } from 'lucide-react';
-
-const scrollToAppointment = () => {
-  const target = document.getElementById('appointment');
-  if (target) {
-    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-};
+import { scrollToAppointment } from '../utils/scrollHelpers';
 
 const floatVariants = {
   initial: { opacity: 0, y: 40 },
@@ -141,7 +135,7 @@ export default function Hero() {
       {/* Scroll indicator */}
       <motion.button
         type="button"
-        onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+        onClick={() => scrollToSection('services')}
         className="scroll-indicator"
         animate={{ y: [0, 8, 0] }}
         transition={{ duration: 2, repeat: Infinity }}

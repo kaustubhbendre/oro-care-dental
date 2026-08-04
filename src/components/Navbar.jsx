@@ -1,13 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Phone, Menu, X } from 'lucide-react';
-
-const scrollToSection = (id) => {
-  const target = document.getElementById(id);
-  if (target) {
-    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-};
+import { scrollToSection } from '../utils/scrollHelpers';
 
 const navLinks = [
   { label: 'Home', href: '#home' },

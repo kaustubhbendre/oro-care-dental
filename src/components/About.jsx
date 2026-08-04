@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import CountUp from 'react-countup';
 import { CheckCircle2, Star } from 'lucide-react';
+import { scrollToAppointment } from '../utils/scrollHelpers';
 
 const stats = [
   { num: 15, suffix: '+', label: 'Years Experience' },
@@ -124,7 +125,7 @@ export default function About() {
 
             <motion.button
               type="button"
-              onClick={() => document.getElementById('appointment')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+              onClick={scrollToAppointment}
               className="btn-primary"
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
