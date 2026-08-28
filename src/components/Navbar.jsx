@@ -112,6 +112,7 @@ export default function Navbar() {
           padding: 16px 0;
           background: rgba(238, 247, 246, 0.9);
           backdrop-filter: blur(12px);
+          border-bottom: 1px solid rgba(10, 74, 110, 0.08);
           transition: all 0.4s ease;
         }
         .navbar.scrolled {
