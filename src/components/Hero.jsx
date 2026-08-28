@@ -1,6 +1,6 @@
 // src/components/Hero.jsx
 import { motion } from 'framer-motion';
-import { Phone, MapPin, Star, ChevronDown, CalendarCheck, Sparkles } from 'lucide-react';
+import { Phone, MapPin, Star, ChevronDown, CalendarCheck } from 'lucide-react';
 import { scrollToAppointment, scrollToSection } from '../utils/scrollHelpers';
 
 const floatVariants = {
@@ -92,10 +92,7 @@ export default function Hero() {
         >
           <div className="visual-card main-card">
             <div className="visual-icon">
-              <span className="tooth-mark" aria-hidden="true" />
               <span className="visual-mark-title">OC</span>
-              <Sparkles className="visual-sparkles" size={34} strokeWidth={1.6} />
-              <span className="visual-smile" />
             </div>
             <div className="card-info">
               <p className="card-name">Dr. Shashank Kumar</p>
@@ -279,46 +276,23 @@ export default function Hero() {
           position: relative;
         }
         .visual-icon {
-          width: 190px;
-          height: 140px;
+          width: 108px;
+          height: 108px;
+          border-radius: 20px;
+          background: rgba(255,255,255,0.15);
           display: grid;
           place-items: center;
           position: relative;
           color: rgba(255,255,255,0.98);
           animation: floatBob 3s ease-in-out infinite;
-        }
-        .tooth-mark {
-          position: absolute;
-          width: 76px;
-          height: 104px;
-          border: 6px solid rgba(255,255,255,0.98);
-          border-radius: 50% 50% 42% 45%;
-          transform: rotate(-14deg) skewY(-4deg);
-          color: rgba(255,255,255,0.98);
+          box-shadow: inset 0 0 0 1px rgba(255,255,255,0.18);
         }
         .visual-mark-title {
           position: relative;
           z-index: 1;
-          margin-top: 6px;
-          font-size: 2.35rem;
-          font-weight: 500;
+          font-size: 1.65rem;
+          font-weight: 700;
           letter-spacing: 0.04em;
-        }
-        .visual-sparkles {
-          position: absolute;
-          top: 8px;
-          right: 12px;
-          color: var(--white);
-        }
-        .visual-smile {
-          position: absolute;
-          width: 68px;
-          height: 28px;
-          bottom: 12px;
-          right: 24px;
-          border-bottom: 6px solid var(--teal);
-          border-radius: 0 0 70% 70%;
-          transform: rotate(-22deg);
         }
         .card-info {
           text-align: center;
