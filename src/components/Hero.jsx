@@ -281,44 +281,41 @@ export default function Hero() {
         .visual-icon {
           width: 190px;
           height: 140px;
-          border-radius: 20px;
-          background: rgba(255,255,255,0.15);
           display: grid;
           place-items: center;
           position: relative;
           color: rgba(255,255,255,0.98);
           animation: floatBob 3s ease-in-out infinite;
-          box-shadow: inset 0 0 0 1px rgba(255,255,255,0.18);
         }
         .tooth-mark {
           position: absolute;
           width: 76px;
           height: 104px;
           border: 6px solid rgba(255,255,255,0.98);
-          border-radius: 48% 52% 42% 44%;
-          transform: rotate(-12deg);
+          border-radius: 50% 50% 42% 45%;
+          transform: rotate(-14deg) skewY(-4deg);
           color: rgba(255,255,255,0.98);
         }
         .visual-mark-title {
           position: relative;
           z-index: 1;
-          margin-top: 8px;
-          font-size: 2.2rem;
+          margin-top: 6px;
+          font-size: 2.35rem;
           font-weight: 500;
           letter-spacing: 0.04em;
         }
         .visual-sparkles {
           position: absolute;
           top: 8px;
-          right: 18px;
+          right: 12px;
           color: var(--white);
         }
         .visual-smile {
           position: absolute;
           width: 68px;
           height: 28px;
-          bottom: 18px;
-          right: 30px;
+          bottom: 12px;
+          right: 24px;
           border-bottom: 6px solid var(--teal);
           border-radius: 0 0 70% 70%;
           transform: rotate(-22deg);
