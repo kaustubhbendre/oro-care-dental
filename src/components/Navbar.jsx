@@ -110,14 +110,14 @@ export default function Navbar() {
           top: 0; left: 0; right: 0;
           z-index: 1000;
           padding: 16px 0;
-          background: rgba(238, 247, 246, 0.9);
-          backdrop-filter: blur(12px);
-          border-bottom: 1px solid rgba(10, 74, 110, 0.08);
+          background: transparent;
+          border-bottom: 1px solid transparent;
           transition: all 0.4s ease;
         }
         .navbar.scrolled {
           background: rgba(255,255,255,0.97);
           backdrop-filter: blur(20px);
+          border-bottom-color: rgba(10, 74, 110, 0.08);
           padding: 10px 0;
           box-shadow: 0 2px 30px rgba(10,74,110,0.1);
         }
