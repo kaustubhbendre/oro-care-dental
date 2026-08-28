@@ -36,7 +36,7 @@ export default function Navbar() {
               <span aria-hidden="true">🦷</span>
             </div>
             <div className="logo-text">
-              <span className="logo-title"><span>Oro-Care</span></span>
+              <span className="logo-title"><span>Oro</span><span className="logo-title-accent">Care</span></span>
               <span className="logo-sub">Dental Clinic</span>
             </div>
           </button>
