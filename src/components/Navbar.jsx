@@ -190,6 +190,7 @@ export default function Navbar() {
           align-items: center;
           gap: 16px;
           margin-left: auto;
+          flex-shrink: 0;
         }
         .nav-phone {
           display: flex;
@@ -259,6 +260,9 @@ export default function Navbar() {
           color: var(--text-mid);
           font-size: 0.9rem;
           font-weight: 500;
+        }
+        @media (max-width: 1000px) {
+          .nav-links li:not(:last-child) { display: none; }
         }
         @media (max-width: 768px) {
           .nav-links, .nav-phone { display: none; }
