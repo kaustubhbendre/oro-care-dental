@@ -205,6 +205,9 @@ export default function Navbar() {
         .nav-btn {
           padding: 10px 22px !important;
           font-size: 0.85rem !important;
+          background: var(--ocean) !important;
+          color: var(--white) !important;
+          opacity: 1 !important;
         }
         .hamburger {
           display: none;
