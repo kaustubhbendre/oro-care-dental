@@ -110,6 +110,8 @@ export default function Navbar() {
           top: 0; left: 0; right: 0;
           z-index: 1000;
           padding: 16px 0;
+          background: rgba(238, 247, 246, 0.9);
+          backdrop-filter: blur(12px);
           transition: all 0.4s ease;
         }
         .navbar.scrolled {
@@ -187,6 +189,7 @@ export default function Navbar() {
           display: flex;
           align-items: center;
           gap: 16px;
+          margin-left: auto;
         }
         .nav-phone {
           display: flex;
@@ -257,7 +260,7 @@ export default function Navbar() {
           font-size: 0.9rem;
           font-weight: 500;
         }
-        @media (max-width: 960px) {
+        @media (max-width: 768px) {
           .nav-links, .nav-phone { display: none; }
           .hamburger { display: flex; }
           .nav-btn { display: none; }
