@@ -211,6 +211,12 @@ export default function Hero() {
         .hero-title {
           letter-spacing: -0.02em;
         }
+        .hero .section-tag::before {
+          width: 36px;
+          height: 3px;
+          background: var(--teal);
+          opacity: 1;
+        }
         .gradient-text {
           background: linear-gradient(135deg, var(--ocean), var(--teal));
           -webkit-background-clip: text;
