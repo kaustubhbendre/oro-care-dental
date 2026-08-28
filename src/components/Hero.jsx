@@ -91,7 +91,10 @@ export default function Hero() {
           transition={{ delay: 0.3, duration: 0.9, ease: [0.4, 0, 0.2, 1] }}
         >
           <div className="visual-card main-card">
-            <div className="visual-icon">OC</div>
+            <div className="visual-icon">
+              <span className="visual-brand-name">OroCare</span>
+              <span className="visual-brand-sub">Dental Clinic</span>
+            </div>
             <div className="card-info">
               <p className="card-name">Dr. Shashank Kumar</p>
               <p className="card-qual">BDS (Mum) · CCOS (Delhi)</p>
@@ -274,18 +277,31 @@ export default function Hero() {
           position: relative;
         }
         .visual-icon {
-          width: 96px;
+          width: 190px;
           height: 96px;
-          border-radius: 24px;
+          border-radius: 20px;
           background: rgba(255,255,255,0.15);
-          display: grid;
-          place-items: center;
-          font-size: 1.65rem;
-          font-weight: 700;
-          letter-spacing: 0.08em;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
           color: rgba(255,255,255,0.98);
           animation: floatBob 3s ease-in-out infinite;
           box-shadow: inset 0 0 0 1px rgba(255,255,255,0.18);
+        }
+        .visual-brand-name {
+          font-family: var(--font-display);
+          font-size: 1.8rem;
+          font-weight: 700;
+          line-height: 1;
+        }
+        .visual-brand-sub {
+          margin-top: 6px;
+          color: var(--teal);
+          font-size: 0.68rem;
+          font-weight: 700;
+          letter-spacing: 0.16em;
+          text-transform: uppercase;
         }
         .card-info {
           text-align: center;

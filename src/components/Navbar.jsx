@@ -32,11 +32,8 @@ export default function Navbar() {
         <div className="container nav-inner">
           {/* Logo */}
          <button type="button" onClick={() => scrollToSection('home')} className="nav-logo btn-reset">
-            <div className="logo-icon">
-              <span style={{ fontSize: '24px' }}>🦷</span>
-            </div>
             <div className="logo-text">
-              <span className="logo-title">Oro-Care</span>
+              <span className="logo-title">OroCare</span>
               <span className="logo-sub">Dental Clinic</span>
             </div>
           </button>
@@ -129,16 +126,7 @@ export default function Navbar() {
         .nav-logo {
           display: flex;
           align-items: center;
-          gap: 12px;
           text-decoration: none;
-        }
-        .logo-icon {
-          width: 44px; height: 44px;
-          background: linear-gradient(135deg, var(--ocean), var(--teal));
-          border-radius: 12px;
-          display: flex; align-items: center; justify-content: center;
-          font-size: 22px;
-          box-shadow: 0 4px 15px rgba(0,180,216,0.3);
         }
         .logo-text {
           display: flex;
@@ -147,7 +135,7 @@ export default function Navbar() {
         }
         .logo-title {
           font-family: var(--font-display);
-          font-size: 1.15rem;
+          font-size: 1.35rem;
           font-weight: 700;
           color: var(--ocean-dark);
         }
