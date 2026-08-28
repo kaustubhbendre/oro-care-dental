@@ -26,11 +26,9 @@ export default function Hero() {
       <div className="container hero-inner">
         {/* Left Content */}
         <div className="hero-content">
-          <motion.div
-            custom={0} variants={floatVariants} initial="initial" animate="animate"
-          >
+          <div>
             <motion.span className="section-tag">Trusted by over 164K patients</motion.span>
-          </motion.div>
+          </div>
 
           <motion.h1
             className="heading-xl hero-title"
