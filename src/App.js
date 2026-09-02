@@ -7,8 +7,10 @@ import AdminLogin from './pages/AdminLogin';
 import './styles/global.css';
 
 export default function App() {
+  const basename = window.location.hostname.endsWith('github.io') ? '/oro-care-dental' : undefined;
+
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={basename}>
       <Toaster
         position="top-right"
         toastOptions={{
