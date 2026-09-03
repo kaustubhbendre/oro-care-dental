@@ -118,14 +118,6 @@ export default function Hero() {
             <span className="stat-label">Happy Patients</span>
           </motion.div>
 
-          <motion.div
-            className="stat-card stat-3"
-            animate={{ y: [0, -6, 0] }}
-            transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
-          >
-            <span className="stat-label">Latest Technology</span>
-          </motion.div>
-
           {/* Decorative ring */}
           <div className="deco-ring ring-1" />
           <div className="deco-ring ring-2" />
