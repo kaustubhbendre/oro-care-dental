@@ -90,6 +90,7 @@ export default function AppointmentForm() {
       const normalizePhone = (phone) => phone.replace(/\s+/g, '').trim();
       const payload = { ...formData, phone: normalizePhone(formData.phone) };
       await createAppointment(payload);
+      let emailDeliveryFailed = false;
 
       try {
         await emailjs.send(
@@ -107,6 +108,7 @@ export default function AppointmentForm() {
           'A-rLV3zDOuZKFf4Fr'
         );
       } catch (emailErr) {
+        emailDeliveryFailed = true;
         console.error('Email notification failed:', emailErr);
       }
 
@@ -127,13 +129,18 @@ export default function AppointmentForm() {
             'A-rLV3zDOuZKFf4Fr'
           );
         } catch (patientEmailErr) {
+          emailDeliveryFailed = true;
           console.error('Patient confirmation email failed:', patientEmailErr);
         }
       }
 
-      toast.success(isSupabaseConfigured
-        ? "Thanks — we've received your request. We'll confirm within 2 hours."
-        : 'Saved locally — connect Supabase to sync and access admin features.');
+      if (emailDeliveryFailed) {
+        toast.error('Appointment saved, but email delivery is unavailable. Please reconnect Gmail in EmailJS.');
+      } else {
+        toast.success(isSupabaseConfigured
+          ? "Thanks — we've received your request. We'll confirm within 2 hours."
+          : 'Saved locally — connect Supabase to sync and access admin features.');
+      }
       setSuccess(true);
       setFormData({
         name: '',
