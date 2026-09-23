@@ -25,6 +25,7 @@ const timeSlots = [
 export default function AppointmentForm() {
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [emailDeliveryFailed, setEmailDeliveryFailed] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -135,8 +136,10 @@ export default function AppointmentForm() {
       }
 
       if (emailDeliveryFailed) {
+        setEmailDeliveryFailed(true);
         toast.error('Appointment saved, but email delivery is unavailable. Please reconnect Gmail in EmailJS.');
       } else {
+        setEmailDeliveryFailed(false);
         toast.success(isSupabaseConfigured
           ? "Thanks — we've received your request. We'll confirm within 2 hours."
           : 'Saved locally — connect Supabase to sync and access admin features.');
@@ -243,9 +246,11 @@ export default function AppointmentForm() {
           {success ? (
             <div className="success-state">
               <div className="success-icon"><CheckCircle2 size={36} /></div>
-              <h3>Thanks — request received!</h3>
-              <p>We've received your request and will contact you within 2 hours to confirm.</p>
-              <button className="btn-primary" onClick={() => setSuccess(false)}>
+              <h3>{emailDeliveryFailed ? 'Appointment saved' : 'Thanks — request received!'}</h3>
+              <p>{emailDeliveryFailed
+                ? 'Your appointment was saved, but email delivery is temporarily unavailable. Please call the clinic to confirm.'
+                : "We've received your request and will contact you within 2 hours to confirm."}</p>
+              <button className="btn-primary" onClick={() => { setSuccess(false); setEmailDeliveryFailed(false); }}>
                 Book Another
               </button>
             </div>
