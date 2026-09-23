@@ -203,7 +203,8 @@ export async function createAppointment(data) {
       if (error) throw error;
       return result;
     } catch (error) {
-      console.warn('Supabase insert failed, using local fallback:', error);
+      console.error('Supabase appointment insert failed:', error);
+      throw new Error('The appointment database is unavailable. Please try again or call the clinic directly.');
     }
   }
 
