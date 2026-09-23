@@ -3,37 +3,39 @@ import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { scrollToAppointment } from '../utils/scrollHelpers';
 
+const imagePath = (path) => `${process.env.PUBLIC_URL || ''}${path}`;
+
 const services = [
   {
     title: 'Root Canal Treatment',
-    image: '/images/services/root-canal.jpg',
+    image: imagePath('/images/services/root-canal.jpg'),
     description: 'Gentle root canal care to save your tooth and ease discomfort with modern comfort-focused techniques.',
   },
   {
     title: 'Teeth Whitening',
-    image: '/images/services/teeth-whitening.jpg',
+    image: imagePath('/images/services/teeth-whitening.jpg'),
     description: 'Brighten your smile safely with professional whitening that looks natural and fresh.',
   },
   {
     title: 'Braces & Aligners',
     // Place AI-generated or sourced image at public/images/services/braces-aligners.jpg
-    image: '/images/services/braces-aligners.jpg',
+    image: imagePath('/images/services/braces-aligners.jpg'),
     description: 'Comfortable braces and clear aligners that gently straighten teeth while fitting your lifestyle.',
   },
   {
     title: 'Dental Implants',
     // Place AI-generated or sourced image at public/images/services/dental-implants.jpg
-    image: '/images/services/dental-implants.jpg',
+    image: imagePath('/images/services/dental-implants.jpg'),
     description: 'Natural-feeling implants that restore missing teeth and bring back your confident smile.',
   },
   {
     title: 'Cosmetic Dentistry',
-    image: '/images/services/cosmetic-dentistry.jpg',
+    image: imagePath('/images/services/cosmetic-dentistry.jpg'),
     description: 'Personalized cosmetic treatments like veneers and smile design to refresh your look.',
   },
   {
     title: 'Oral Surgery',
-    image: '/images/services/oral-surgery.jpg',
+    image: imagePath('/images/services/oral-surgery.jpg'),
     description: 'Careful oral surgery with thoughtful planning and a focus on your comfort every step of the way.',
   },
 ];
