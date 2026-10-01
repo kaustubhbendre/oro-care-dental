@@ -164,7 +164,7 @@ export function isLocalAdminCredentials(email, password) {
 }
 
 export async function signInAdmin(email, password) {
-  if (isLocalAdminCredentials(email, password)) {
+  if (!isSupabaseConfigured && isLocalAdminCredentials(email, password)) {
     if (typeof window !== 'undefined') {
       window.localStorage.setItem(LOCAL_ADMIN_SESSION_KEY, 'true');
     }
@@ -205,11 +205,10 @@ export async function signOutAdmin() {
 }
 
 export async function getCurrentUser() {
-  if (typeof window !== 'undefined' && window.localStorage.getItem(LOCAL_ADMIN_SESSION_KEY) === 'true') {
-    return { id: 'local-admin', email: LOCAL_ADMIN_EMAIL };
-  }
-
   if (!isSupabaseConfigured || !supabase) {
+    if (typeof window !== 'undefined' && window.localStorage.getItem(LOCAL_ADMIN_SESSION_KEY) === 'true') {
+      return { id: 'local-admin', email: LOCAL_ADMIN_EMAIL };
+    }
     return null;
   }
 

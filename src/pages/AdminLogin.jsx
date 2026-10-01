@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { signInAdmin, isSupabaseConfigured, getCurrentUser, LOCAL_ADMIN_EMAIL, LOCAL_ADMIN_PASSWORD, isLocalAdminCredentials } from '../lib/supabase';
 
 export default function AdminLogin() {
-  const [email, setEmail] = useState(LOCAL_ADMIN_EMAIL);
-  const [password, setPassword] = useState(LOCAL_ADMIN_PASSWORD);
+  const [email, setEmail] = useState(isSupabaseConfigured ? '' : LOCAL_ADMIN_EMAIL);
+  const [password, setPassword] = useState(isSupabaseConfigured ? '' : LOCAL_ADMIN_PASSWORD);
   const [loginError, setLoginError] = useState('');
   const [authenticating, setAuthenticating] = useState(false);
   const navigate = useNavigate();
@@ -27,12 +27,10 @@ export default function AdminLogin() {
     adminMeta.content = 'noindex, nofollow';
 
     const checkAuth = async () => {
-      if (typeof window !== 'undefined' && window.localStorage.getItem('oro-care-local-admin-session') === 'true') {
-        navigate('/admin');
-        return;
-      }
-
       if (!isSupabaseConfigured) {
+        if (typeof window !== 'undefined' && window.localStorage.getItem('oro-care-local-admin-session') === 'true') {
+          navigate('/admin');
+        }
         return;
       }
 
@@ -65,25 +63,11 @@ export default function AdminLogin() {
     event.preventDefault();
     setLoginError('');
 
-    if (isLocalAdminCredentials(email, password)) {
-      setAuthenticating(true);
-      try {
-        const { data, error } = await signInAdmin(email, password);
-        if (error || !data?.user) {
-          throw error || new Error('Sign in failed.');
-        }
-        navigate('/admin');
-      } catch (err) {
-        setLoginError(err?.message || 'Unable to sign in. Please check your email and password.');
-      } finally {
-        setAuthenticating(false);
-      }
-      return;
-    }
-
     if (!isSupabaseConfigured) {
-      setLoginError('Supabase is not configured yet. Please add your project URL and anon key, or use the demo admin credentials.');
-      return;
+      if (!isLocalAdminCredentials(email, password)) {
+        setLoginError('Supabase is not configured yet. Please add your project URL and anon key, or use the demo admin credentials.');
+        return;
+      }
     }
 
     setAuthenticating(true);
