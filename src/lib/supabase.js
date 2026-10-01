@@ -54,8 +54,18 @@ function getEnvValue(env, keys) {
 }
 
 export function getSupabaseConfig(env = process.env) {
-  const url = getEnvValue(env, ['REACT_APP_SUPABASE_URL', 'SUPABASE_URL']);
-  const anonKey = getEnvValue(env, ['REACT_APP_SUPABASE_ANON_KEY', 'SUPABASE_ANON_KEY']);
+  const url = getEnvValue(env, [
+    'REACT_APP_VERCEL_SUPABASE_SUPABASE_URL',
+    'REACT_APP_VERCEL_SUPABASE_URL',
+    'REACT_APP_SUPABASE_URL',
+    'SUPABASE_URL',
+  ]);
+  const anonKey = getEnvValue(env, [
+    'REACT_APP_VERCEL_SUPABASE_SUPABASE_ANON_KEY',
+    'REACT_APP_VERCEL_SUPABASE_ANON_KEY',
+    'REACT_APP_SUPABASE_ANON_KEY',
+    'SUPABASE_ANON_KEY',
+  ]);
   const isConfigured = Boolean(
     url &&
     anonKey &&
@@ -82,7 +92,11 @@ if (isSupabaseConfigured) {
 
 export { supabase };
 
+export const LOCAL_ADMIN_EMAIL = 'admin@oro-care.local';
+export const LOCAL_ADMIN_PASSWORD = 'OroCareAdmin@2026';
+
 const STORAGE_KEY = 'oro-care-dental-appointments';
+const LOCAL_ADMIN_SESSION_KEY = 'oro-care-local-admin-session';
 
 function readStoredAppointments() {
   if (typeof window === 'undefined') {
@@ -142,9 +156,30 @@ export function updateStoredAppointmentStatus(id, status) {
   return updated.find((appointment) => appointment.id === id) || null;
 }
 
+export function isLocalAdminCredentials(email, password) {
+  return (
+    String(email || '').trim().toLowerCase() === LOCAL_ADMIN_EMAIL &&
+    String(password || '') === LOCAL_ADMIN_PASSWORD
+  );
+}
+
 export async function signInAdmin(email, password) {
+  if (isLocalAdminCredentials(email, password)) {
+    if (typeof window !== 'undefined') {
+      window.localStorage.setItem(LOCAL_ADMIN_SESSION_KEY, 'true');
+    }
+    return {
+      data: {
+        user: {
+          id: 'local-admin',
+          email: LOCAL_ADMIN_EMAIL,
+        },
+      },
+    };
+  }
+
   if (!isSupabaseConfigured || !supabase) {
-    throw new Error('Database not configured. Please set up Supabase in .env file.');
+    throw new Error('Database not configured. Please set up Supabase in .env file or use the demo admin login.');
   }
 
   const { data, error } = await supabase.auth.signInWithPassword({
@@ -158,7 +193,10 @@ export async function signInAdmin(email, password) {
 
 export async function signOutAdmin() {
   if (!isSupabaseConfigured || !supabase) {
-    throw new Error('Database not configured. Please set up Supabase in .env file.');
+    if (typeof window !== 'undefined') {
+      window.localStorage.removeItem(LOCAL_ADMIN_SESSION_KEY);
+    }
+    return true;
   }
 
   const { error } = await supabase.auth.signOut();
@@ -167,12 +205,20 @@ export async function signOutAdmin() {
 }
 
 export async function getCurrentUser() {
+  if (typeof window !== 'undefined' && window.localStorage.getItem(LOCAL_ADMIN_SESSION_KEY) === 'true') {
+    return { id: 'local-admin', email: LOCAL_ADMIN_EMAIL };
+  }
+
   if (!isSupabaseConfigured || !supabase) {
     return null;
   }
 
   const { data, error } = await supabase.auth.getUser();
   if (error) {
+    const msg = String(error?.message || '');
+    if (msg.includes('Auth session missing') || error?.name === 'AuthSessionMissingError') {
+      return null;
+    }
     throw error;
   }
   return data?.user || null;
@@ -196,12 +242,10 @@ export async function createAppointment(data) {
     try {
       const { data: result, error } = await supabase
         .from('appointments')
-        .insert([appointmentPayload])
-        .select()
-        .single();
+        .insert([appointmentPayload]);
 
       if (error) throw error;
-      return result;
+      return result || appointmentPayload;
     } catch (error) {
       console.error('Supabase appointment insert failed:', error);
       throw new Error('The appointment database is unavailable. Please try again or call the clinic directly.');

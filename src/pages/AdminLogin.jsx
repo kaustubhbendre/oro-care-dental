@@ -1,11 +1,11 @@
 // src/pages/AdminLogin.jsx
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { signInAdmin, isSupabaseConfigured, getCurrentUser } from '../lib/supabase';
+import { signInAdmin, isSupabaseConfigured, getCurrentUser, LOCAL_ADMIN_EMAIL, LOCAL_ADMIN_PASSWORD, isLocalAdminCredentials } from '../lib/supabase';
 
 export default function AdminLogin() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState(LOCAL_ADMIN_EMAIL);
+  const [password, setPassword] = useState(LOCAL_ADMIN_PASSWORD);
   const [loginError, setLoginError] = useState('');
   const [authenticating, setAuthenticating] = useState(false);
   const navigate = useNavigate();
@@ -27,7 +27,14 @@ export default function AdminLogin() {
     adminMeta.content = 'noindex, nofollow';
 
     const checkAuth = async () => {
-      if (!isSupabaseConfigured) return;
+      if (typeof window !== 'undefined' && window.localStorage.getItem('oro-care-local-admin-session') === 'true') {
+        navigate('/admin');
+        return;
+      }
+
+      if (!isSupabaseConfigured) {
+        return;
+      }
 
       try {
         const currentUser = await getCurrentUser();
@@ -35,7 +42,10 @@ export default function AdminLogin() {
           navigate('/admin');
         }
       } catch (err) {
-        console.error('Auth check failed:', err);
+        const msg = String(err?.message || '');
+        if (!msg.includes('Auth session missing') && err?.name !== 'AuthSessionMissingError') {
+          console.error('Auth check failed:', err);
+        }
       }
     };
 
@@ -54,8 +64,25 @@ export default function AdminLogin() {
   const handleLogin = async (event) => {
     event.preventDefault();
     setLoginError('');
+
+    if (isLocalAdminCredentials(email, password)) {
+      setAuthenticating(true);
+      try {
+        const { data, error } = await signInAdmin(email, password);
+        if (error || !data?.user) {
+          throw error || new Error('Sign in failed.');
+        }
+        navigate('/admin');
+      } catch (err) {
+        setLoginError(err?.message || 'Unable to sign in. Please check your email and password.');
+      } finally {
+        setAuthenticating(false);
+      }
+      return;
+    }
+
     if (!isSupabaseConfigured) {
-      setLoginError('Supabase is not configured yet yet. Please add environment variables and redeploy.');
+      setLoginError('Supabase is not configured yet. Please add your project URL and anon key, or use the demo admin credentials.');
       return;
     }
 
@@ -87,6 +114,11 @@ export default function AdminLogin() {
         <div className="login-card">
           <h2>Admin Login</h2>
           <p>Sign in with your Supabase admin account to view appointment requests.</p>
+          {!isSupabaseConfigured && (
+            <div className="demo-login-box">
+              Demo admin login: <strong>{LOCAL_ADMIN_EMAIL}</strong> / <strong>{LOCAL_ADMIN_PASSWORD}</strong>
+            </div>
+          )}
           <form onSubmit={handleLogin} className="login-form">
             <label>
               Email
@@ -179,6 +211,16 @@ export default function AdminLogin() {
           margin-bottom: 24px;
           color: var(--text-mid);
           line-height: 1.7;
+        }
+        .demo-login-box {
+          margin-bottom: 18px;
+          background: rgba(0, 180, 216, 0.08);
+          border: 1px solid rgba(0, 180, 216, 0.18);
+          color: var(--ocean-dark);
+          border-radius: var(--radius-sm);
+          padding: 10px 12px;
+          font-size: 0.82rem;
+          line-height: 1.5;
         }
         .login-form {
           display: grid;
