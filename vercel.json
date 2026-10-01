@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "buildCommand": "PUBLIC_URL=/ npm run build",
   "builds": [
     {
       "src": "package.json",
@@ -11,6 +10,10 @@
     }
   ],
   "routes": [
+    {
+      "src": "/admin/static/(.*)",
+      "dest": "/static/$1"
+    },
     {
       "src": "/static/(.*)",
       "dest": "/static/$1"
