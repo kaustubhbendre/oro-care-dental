@@ -63,6 +63,13 @@ export default function AdminLogin() {
     event.preventDefault();
     setLoginError('');
 
+    if (isSupabaseConfigured && isLocalAdminCredentials(email, password)) {
+      setEmail('');
+      setPassword('');
+      setLoginError('Those are local demo credentials, not a Supabase account. Create your admin user in the Vercel-linked Supabase project under Authentication > Users, then sign in with that account.');
+      return;
+    }
+
     if (!isSupabaseConfigured) {
       if (!isLocalAdminCredentials(email, password)) {
         setLoginError('Supabase is not configured yet. Please add your project URL and anon key, or use the demo admin credentials.');
@@ -78,7 +85,14 @@ export default function AdminLogin() {
       }
       navigate('/admin');
     } catch (err) {
-      setLoginError(err?.message || 'Unable to sign in. Please check your email and password.');
+      const message = String(err?.message || '');
+      if (message.toLowerCase().includes('invalid login credentials')) {
+        setEmail('');
+        setPassword('');
+        setLoginError('This email is not registered in the Vercel-linked Supabase project, or the password is incorrect. Create or reset the admin user under Authentication > Users, then try again.');
+      } else {
+        setLoginError(message || 'Unable to sign in. Please check your email and password.');
+      }
     } finally {
       setAuthenticating(false);
     }
