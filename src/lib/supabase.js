@@ -55,12 +55,14 @@ function getEnvValue(env, keys) {
 
 export function getSupabaseConfig(env = process.env) {
   const url = getEnvValue(env, [
+    'REACT_APP_VERCEL_SUPABASE_REACT_APP_SUPABASE_URL',
     'REACT_APP_VERCEL_SUPABASE_SUPABASE_URL',
     'REACT_APP_VERCEL_SUPABASE_URL',
     'REACT_APP_SUPABASE_URL',
     'SUPABASE_URL',
   ]);
   const anonKey = getEnvValue(env, [
+    'REACT_APP_VERCEL_SUPABASE_REACT_APP_SUPABASE_ANON_KEY',
     'REACT_APP_VERCEL_SUPABASE_SUPABASE_ANON_KEY',
     'REACT_APP_VERCEL_SUPABASE_ANON_KEY',
     'REACT_APP_SUPABASE_ANON_KEY',

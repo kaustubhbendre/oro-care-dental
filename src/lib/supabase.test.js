@@ -42,6 +42,21 @@ describe('getSupabaseConfig', () => {
     });
   });
 
+  it('uses the Vercel integration React-prefixed Supabase variables', () => {
+    const env = {
+      REACT_APP_VERCEL_SUPABASE_REACT_APP_SUPABASE_URL: 'https://vercel-integration.supabase.co',
+      REACT_APP_VERCEL_SUPABASE_REACT_APP_SUPABASE_ANON_KEY: 'vercel-integration-key',
+      REACT_APP_SUPABASE_URL: 'https://old-project.supabase.co',
+      REACT_APP_SUPABASE_ANON_KEY: 'old-project-key',
+    };
+
+    expect(getSupabaseConfig(env)).toEqual({
+      url: 'https://vercel-integration.supabase.co',
+      anonKey: 'vercel-integration-key',
+      isConfigured: true,
+    });
+  });
+
   it('returns false when values are missing or placeholders', () => {
     const env = {
       REACT_APP_SUPABASE_URL: 'YOUR_SUPABASE_URL',
