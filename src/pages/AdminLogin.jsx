@@ -86,10 +86,13 @@ export default function AdminLogin() {
       navigate('/admin');
     } catch (err) {
       const message = String(err?.message || '');
-      if (message.toLowerCase().includes('invalid login credentials')) {
+      if (
+        message.toLowerCase().includes('invalid login credentials') ||
+        message === 'Sign in failed.'
+      ) {
         setEmail('');
         setPassword('');
-        setLoginError('This email is not registered in the Vercel-linked Supabase project, or the password is incorrect. Create or reset the admin user under Authentication > Users, then try again.');
+        setLoginError('Supabase did not return a user for this login. Confirm this email exists and is verified under Authentication > Users in the Vercel-linked project, then set or reset its password.');
       } else {
         setLoginError(message || 'Unable to sign in. Please check your email and password.');
       }
