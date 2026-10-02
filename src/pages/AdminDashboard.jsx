@@ -129,40 +129,7 @@ export default function AdminDashboard() {
     return null;
   }
 
-  if (!isSupabaseConfigured) {
-    return (
-      <div className="admin-page">
-        <div className="admin-header">
-          <div className="container admin-header-inner">
-            <div>
-              <h1 className="admin-title">🦷 Oro-Care Admin</h1>
-              <p className="admin-sub">Appointment Management Dashboard</p>
-            </div>
-          </div>
-        </div>
-        <div className="container admin-body">
-          <div className="empty-state">
-            <span>⚙️</span>
-            <p>Supabase is not configured yet</p>
-            <small>Set up Supabase in your <code>.env</code> file before using the admin dashboard.</small>
-            <ul className="admin-help-list">
-              <li>Copy <code>.env.example</code> to <code>.env</code></li>
-              <li>Add your <code>REACT_APP_SUPABASE_URL</code> and <code>REACT_APP_SUPABASE_ANON_KEY</code></li>
-              <li>Redeploy the site if using Vercel</li>
-            </ul>
-            <a href="https://supabase.com" target="_blank" rel="noreferrer" className="btn-primary" style={{ marginTop: '16px' }}>Open Supabase</a>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   const handleStatusChange = async (id, newStatus) => {
-    if (!isSupabaseConfigured) {
-      toast.error('Supabase is not configured yet. Please set it up in .env.');
-      return;
-    }
-
     try {
       await updateAppointmentStatus(id, newStatus);
       setAppointments(prev =>
